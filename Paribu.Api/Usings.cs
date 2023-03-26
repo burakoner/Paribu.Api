@@ -13,6 +13,7 @@ global using Paribu.Api.Authentication;
 global using Paribu.Api.Converters;
 global using Paribu.Api.Enums;
 global using Paribu.Api.Helpers;
+global using Paribu.Api.Models;
 global using Paribu.Api.Models.RestApi;
 global using Paribu.Api.Models.StreamApi;
 global using System;

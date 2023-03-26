@@ -1,7 +1,4 @@
-﻿using Paribu.Api.Models;
-using Paribu.Api.Models.RestApi;
-
-namespace Paribu.Api;
+﻿namespace Paribu.Api;
 
 public class ParibuRestClient : RestApiClient
 {

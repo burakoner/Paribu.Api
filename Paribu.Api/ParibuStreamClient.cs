@@ -1,7 +1,4 @@
-﻿using Paribu.Api.Models;
-using Paribu.Api.Models.StreamApi;
-
-namespace Paribu.Api;
+﻿namespace Paribu.Api;
 
 public partial class ParibuStreamClient : StreamApiClient
 {
