@@ -56,21 +56,7 @@ public class ParibuRestClient : RestApiClient
     private const string v4_OrdersCancel_Endpoint = "orders/cancel";                                // POST
     private const string v4_OrdersCancelAll_Endpoint = "orders/cancel/all";                         // POST
     private const string v4_UserMarketOrders_Endpoint = "user/market/{symbol}/orders";              // GET
-    private const string v4_OrdersHistory_Endpoint = "history";                                     // history?page=     &per_page=
-    // GET https://web.paribu.com/history?page=1&per_page=25
-    // Request : {"processes":["buy","sell"]}
-    // Response: {"message":{"display":{"component":"none","content":"status"},"severity":"success"},"payload":[{"entity":"order","uid":"lm7z8j53-60dx-7824-r6o3-91wkgq2nrpoo","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"limit","price":21.671,"amount":1156.56,"total":25063.81176,"remaining_amount":0,"average":21.671,"condition":null,"status":"close","created_at":"2023-04-22T14:44:04.000000Z","closed_at":"2023-04-22T14:44:26.000000Z","opened_at":"2023-04-22T14:44:04.000000Z"},{"entity":"order","uid":"nm32er0w-687v-580w-3l1p-v4pgk51dyloo","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"limit","price":20.226,"amount":2367.25,"total":47879.9985,"remaining_amount":0,"average":20.226,"condition":null,"status":"close","created_at":"2023-04-17T04:31:37.000000Z","closed_at":"2023-04-17T04:31:59.000000Z","opened_at":"2023-04-17T04:31:37.000000Z"},{"entity":"order","uid":"65k42o7y-3dmx-z6pg-4e15-9z08lqg1jnpo","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"limit","price":20.268,"amount":2666.25,"total":54039.555,"remaining_amount":2367.25,"average":20.268,"condition":null,"status":"close","created_at":"2023-04-17T04:00:06.000000Z","closed_at":"2023-04-17T04:31:15.000000Z","opened_at":"2023-04-17T04:00:06.000000Z"},{"entity":"order","uid":"65k42o7y-3dmx-z6pq-wrk5-9z08lqg1jnpo","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"market","price":19.92,"amount":97.77,"total":1850.49279,"remaining_amount":0,"average":19.92,"condition":null,"status":"close","created_at":"2023-04-08T20:49:12.000000Z","closed_at":"2023-04-08T20:49:12.000000Z","opened_at":"2023-04-08T20:49:12.000000Z"},{"entity":"order","uid":"1yoez43m-dw6v-pzd5-e4dl-x5ngk0jpq82o","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"limit","price":19.668,"amount":500,"total":9834,"remaining_amount":0,"average":19.668,"condition":null,"status":"close","created_at":"2023-04-02T12:15:07.000000Z","closed_at":"2023-04-02T12:15:30.000000Z","opened_at":"2023-04-02T12:15:07.000000Z"}],"meta":{"pagination":{"total":2,"per_page":25,"current_page":1,"last_page":1}}}
-
-    // Optional: ended_at, started_at, currencies
-    // {"processes":["buy","sell"],"ended_at":"2023-05-01T11:44:45.609Z","started_at":"2023-02-01T11:44:45.609Z","currencies":["usdt"]}
-
-    // tüm prosessler: {processes: ["buy","sell", "deposit", "withdraw"]
-
-
-
-
-
-
+    private const string v4_OrdersHistory_Endpoint = "history";                                     // GET
 
     // Alarm Endpoints (Private)
     private const string v4_Alarm_Set_Endpoint = "alarm";                                           // POST
