@@ -6,6 +6,6 @@ public class ParibuRestClientOptions : RestApiClientOptions
 
     public ParibuRestClientOptions() : base()
     {
-        this.BaseAddress = ParibuApiAddresses.Default.ApiAddress;
+        this.BaseAddress = ParibuApiAddresses.App.ApiAddress;
     }
 }

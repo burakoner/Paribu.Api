@@ -6,6 +6,6 @@ public class ParibuStreamClientOptions : StreamApiClientOptions
 
     public ParibuStreamClientOptions() : base()
     {
-        this.BaseAddress = ParibuApiAddresses.Default.WebsocketAddress;
+        this.BaseAddress = ParibuApiAddresses.App.WebsocketAddress;
     }
 }
