@@ -35,39 +35,41 @@ Paribu.Api provides two clients to interact with the Paribu API. The  `ParibuRes
 **Public Endpoints**
 ```C#
 // Rest Api Client
-var api = new ParibuClient();
+var api = new ParibuRestClient();
 
-/* Public Endpoints */
-var p01 = await api.GetInitialsAsync();
-var p02 = await api.GetTickersAsync();
-var p03 = await api.GetMarketDataAsync("btc-tl");
-var p04 = await api.GetChartDataAsync("btc-tl");
-var p05 = await api.RegisterAsync("John Doe", "a@b.com", "532XXXXXXX", "Pa55w0rd");
-var p06 = await api.RegisterTwoFactorAsync(p05.Data.Token, "---CODE---");
-var p07 = await api.LoginAsync("532XXXXXXX", "Pa55w0rd");
-var p08 = await api.LoginTwoFactorAsync(p07.Data.Token, "---CODE---");
-api.SetAccessToken(p08.Data.Token);
-            
-/* Private Endpoints */
-var p11 = await api.GetUserInitialsAsync();
-var p12 = await api.GetOpenOrdersAsync();
-var p13 = await api.PlaceOrderAsync("usdt-tl", OrderSide.Sell, OrderType.Limit, 110.0m, 10.0m, 11.0m);
-var p14 = await api.CancelOrderAsync("j1kwxq9l-eyr6-7yzg-ogkd-6gp843dzvn5o");
-var p15 = await api.CancelOrdersAsync("usdt-tl");
-var p16 = await api.CancelOrdersAsync("all");
-var p21 = await api.GetAlertsAsync();
-var p22 = await api.SetAlertAsync("usdt-tl", 9.25m);
-var p23 = await api.SetAlertAsync("usdt-tl", 10.25m);
-var p24 = await api.SetAlertAsync("btc-tl", 620000m);
-var p25 = await api.SetAlertAsync("btc-tl", 660000m);
-var p26 = await api.CancelAlertAsync("1z4r65mv-qe3l-29oj-l40d-278ydpnxj90g");
-var p27 = await api.CancelAlertsAsync("eth-tl");
-var p28 = await api.CancelAlertsAsync("all");
-var p31 = await api.GetBalancesAsync();
-var p32 = await api.GetDepositAddressesAsync();
-var p33 = await api.WithdrawAsync("tl", 1000.0m, "---IBAN---");
-var p34 = await api.WithdrawAsync("usdt", 100.0m, "---USDT-ADDRESS---", "", "trx");
-var p35 = await api.CancelWithdrawalAsync(p34.Data.Id);
+// Public Endpoints
+var p01 = await api.GetHealthAsync();
+var p02 = await api.GetExchangeInformationAsync();
+var p03 = await api.GetTickersAsync();
+var p04 = await api.GetPriceSeriesAsync();
+var p05 = await api.GetOrderBookAsync("btc_tl");
+var p06 = await api.GetLatestMatchesAsync("btc_tl");
+var p07 = await api.GetKlinesAsync("btc_tl", ParibuKlineInterval.OneDay, 1654387200, 1682899200, 100);
+var p08 = await api.GetKlinesAsync("btc_tl", ParibuKlineInterval.OneDay, new DateTime(2022, 01, 01), DateTime.Now, 100);
+
+// Authentication (Login)
+var a01 = await api.LoginAsync("+90", "532XXXXXXX", "Pa55w0rd");
+var a02 = await api.LoginVerifyAsync(a01.Data.VerificationToken, "---CODE---");
+
+// Authentication (Existing Token)
+api.SetDeviceId("0123456789abcdef0123456789abcdef");
+api.SetAccessToken("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd");
+
+// Private Endpoints
+var x01 = await api.GetUserAccountAsync();
+var x02 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderSide.Sell, ParibuOrderType.Limit, 21.0m, null, 100.0m); // Limit Order
+var x03 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderSide.Sell, ParibuOrderType.Market, null, null, 100.0m); // Market Order, 100.00 USDT
+var x04 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderSide.Buy, ParibuOrderType.Market, null, null, null, 2100.0m); // Market Order, 2100.00 TL
+var x05 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderSide.Buy, ParibuOrderType.Limit, 21.5m, 21.0m, 100.0m); // Conditional Order
+var x06 = await api.GetOrderAsync("----ORDER-ID-----");
+var x07 = await api.GetOrdersAsync("usdt_tl");
+var x08 = await api.GetOrdersHistoryAsync(new List<string> { "buy", "sell" });
+var x09 = await api.GetOrdersHistoryAsync(new List<string> { "buy", "sell", "deposit", "withdraw" }, new List<string> { "tl", "usdt" });
+var x10 = await api.GetOrdersHistoryAsync(new List<string> { "buy", "sell", "deposit", "withdraw" }, new List<string> { "tl", "usdt" }, new DateTime(2022, 01, 01), DateTime.Now, 1, 25);
+var x11 = await api.CancelOrderAsync("----ORDER-ID-----");
+var x12 = await api.CancelOrdersAsync(new List<string> { "----ORDER-ID-01-----", "----ORDER-ID-02-----", "----ORDER-ID-03-----" });
+var x13 = await api.CancelOrdersAsync(new List<string> { "----ORDER-ID-01-----", "----ORDER-ID-02-----", "----ORDER-ID-03-----" });
+var x14 = await api.CancelAllOrdersAsync();
 ```
 
 ## Websocket Api Examples
@@ -75,61 +77,12 @@ The Paribu.Api socket client provides several socket endpoint to which can be su
 
 **Core » Public Feeds**
 ```C#
-var ws = new ParibuStreamClient();
-/* Tickers */
-var sub01 = await ws.SubscribeToTickersAsync((data) =>
-{
-    if (data != null)
-    {
-        Console.WriteLine($"Ticker State >> {data.Symbol} " +
-            (data.Open.HasValue ? $"O:{data.Open} " : "") +
-            (data.High.HasValue ? $"H:{data.High} " : "") +
-            (data.Low.HasValue ? $"L:{data.Low} " : "") +
-            (data.Close.HasValue ? $"C:{data.Close} " : "") +
-            (data.Volume.HasValue ? $"V:{data.Volume} " : "") +
-            (data.Change.HasValue ? $"CH:{data.Change} " : "") +
-            (data.ChangePercent.HasValue ? $"CP:{data.ChangePercent} " : "") +
-            (data.Average24H.HasValue ? $"Avg:{data.Average24H} " : "") +
-            (data.VolumeQuote.HasValue ? $"G:{data.VolumeQuote} " : "") +
-            (data.Bid.HasValue ? $"Bid:{data.Bid} " : "") +
-            (data.Ask.HasValue ? $"Ask:{data.Ask} " : "") +
-            (data.EBid.HasValue ? $"EBid:{data.EBid} " : "") +
-            (data.EAsk.HasValue ? $"EAsk:{data.EAsk} " : "")
-            );
-    }
-}, (data) =>
-{
-    if (data != null)
-    {
-        Console.WriteLine($"Ticker Prices >> {data.Symbol} C:{data.Prices.Count()} P:{string.Join(',', data.Prices)}");
-    }
-});
-
-/* Order Book & Trades */
-var sub02 = await ws.SubscribeToMarketDataAsync("btc-tl", (data) =>
-{
-    if (data != null)
-    {
-        Console.WriteLine($"Book Update >> {data.Symbol} " +
-            $"AsksToAdd:{data.AsksToAdd.Count} " +
-            $"BidsToAdd:{data.BidsToAdd.Count} " +
-            $"AsksToRemove:{data.AsksToRemove.Count} " +
-            $"BidsToRemove:{data.BidsToRemove.Count} "
-            );
-    }
-}, (data) =>
-{
-    if (data != null)
-    {
-        Console.WriteLine($"New Trade >> {data.Symbol} T:{data.Timestamp} P:{data.Price} A:{data.Amount} S:{data.Side}");
-    }
-});
-
-// Unsubscribe
-_ = ws.Unsubscribe(sub01.Data);
-_ = ws.Unsubscribe(sub02.Data);
+...
 ```
 
 ## Release Notes
+* Version 1.1.1 - 01 May 2023
+    * Migrated to Paribu API V4 Endpoints
+
 * Version 1.0.0 - 26 Mar 2023
     * First Release
