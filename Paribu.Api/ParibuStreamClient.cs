@@ -7,7 +7,7 @@ public partial class ParibuStreamClient : StreamApiClient
     {
     }
 
-    public ParibuStreamClient(ParibuStreamClientOptions options) : base("Paribu Stream Api", options)
+    public ParibuStreamClient(ParibuStreamClientOptions options) : base("Paribu (Unofficial) Stream Api", options)
     {
         AddGenericHandler("Welcome", WelcomeHandler);
     }
@@ -16,18 +16,6 @@ public partial class ParibuStreamClient : StreamApiClient
     #region Overrided Methods
     protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
         => new ParibuAuthenticationProvider(credentials);
-    #endregion
-
-    #region Common Methods
-    public static void SetDefaultOptions(ParibuStreamClientOptions options)
-    {
-        ParibuStreamClientOptions.Default = options;
-    }
-
-    public virtual void SetApiCredentials(string apikey, string secret)
-    {
-        SetApiCredentials(new ApiCredentials(apikey, secret));
-    }
     #endregion
 
     #region Protected Methods
@@ -113,6 +101,7 @@ public partial class ParibuStreamClient : StreamApiClient
     }
     #endregion
 
+    /*
     public virtual async Task<CallResult<UpdateSubscription>> SubscribeToTickersAsync(Action<ParibuStreamTicker> onTickerData, Action<ParibuStreamPriceSeries> onPriceSeriesData, CancellationToken ct = default)
     {
         var internalHandler = new Action<StreamDataEvent<ParibuStreamResponse>>(data =>
@@ -187,5 +176,5 @@ public partial class ParibuStreamClient : StreamApiClient
         var request = new ParibuStreamRequest<ParibuSocketSubscribeRequest> { Event = "pusher:subscribe", Data = new ParibuSocketSubscribeRequest { Auth = "", Channel = "prb-market-" + symbol.ToLower() } };
         return await SubscribeAsync(request, null, false, internalHandler, ct).ConfigureAwait(false);
     }
-
+    */
 }

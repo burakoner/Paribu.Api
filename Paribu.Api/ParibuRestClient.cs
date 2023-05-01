@@ -2,44 +2,116 @@
 
 public class ParibuRestClient : RestApiClient
 {
-    #region Internal Fields
-    public string DeviceId { get; set; }
-    #endregion
-
     #region Endpoints
-    protected const int ParibuErrorCode = -1;
 
-    protected const string Endpoints_Public_Initials = "initials";                              // GET
-    protected const string Endpoints_Public_Ticker = "ticker";                                  // GET
-    protected const string Endpoints_Public_Market = "markets/{symbol}";                        // GET
-    protected const string Endpoints_Public_Chart = "charts/{symbol}";                          // GET
-    protected const string Endpoints_Public_Register = "register";                              // POST
-    protected const string Endpoints_Public_TwoFactor = "two-factor";                           // POST
-    protected const string Endpoints_Public_Login = "login";                                    // POST
-    // protected const string Endpoints_Public_RetrySms = "retry-sms";                          // POST
-    // protected const string Endpoints_Public_ResetPasswordInit = "reset/password";            // POST
-    // protected const string Endpoints_Public_ResetPasswordAction = "reset/password";          // PUT
-    // protected const string Endpoints_Public_EmailConfirmation = "user/email/confirmation";   // POST
+    // Public Endpoints
+    private const string v4_Public_Health_Endpoint = "health";                                      // GET
+    private const string v4_Public_Config_Endpoint = "initials/config";                             // GET
+    private const string v4_Public_Ticker_Endpoint = "initials/ticker";                             // GET
+    private const string v4_Public_TickerExtended_Endpoint = "initials/ticker/extended";            // GET
+    private const string v4_Public_PriceSeries_Endpoint = "initials/price-series";                  // GET
+    private const string v4_Public_Orderbook_Endpoint = "market/{symbol}/orderbook";                // GET
+    private const string v4_Public_LatestMatches_Endpoint = "market/{symbol}/latest-matches";       // GET
 
-    // protected const string Endpoints_Private_IdVerify = "user/id-verify";                    // POST
-    // protected const string Endpoints_Private_Logout = "user/logout";                         // POST
-    protected const string Endpoints_Private_OpenOrders = "user/orders";                        // GET
-    protected const string Endpoints_Private_PlaceOrder = "user/orders";                        // POST
-    protected const string Endpoints_Private_CancelOrder = "user/orders/{uid}";                 // DELETE
-    protected const string Endpoints_Private_SetUserAlert = "user/alerts";                      // POST
-    protected const string Endpoints_Private_DeleteUserAlert = "user/alerts/{uid}";             // DELETE
-    // protected const string Endpoints_Private_GetDepositAdress = "user/addresses/assign";     // POST
-    // protected const string Endpoints_Private_DeleteWithdrawAdress = "user/addresses/{t}";    // DELETE
-    protected const string Endpoints_Private_Withdraw = "user/withdraws";                       // POST
-    protected const string Endpoints_Private_CancelWithdrawal = "user/withdraws/{uid}";         // DELETE
-    // protected const string Endpoints_Private_IninalWithdraw = "user/ininal/withdraw";        // POST
-    // protected const string Endpoints_Private_ChangePassword = "user/password";               // PUT
-    // protected const string Endpoints_Private_ChangeEmail = "user/email";                     // PUT
-    // protected const string Endpoints_Private_ChangeTwoFactor = "user/two-factor";            // PUT
-    // protected const string Endpoints_Private_CreateTicket = "tickets";                       // POST
-    // protected const string Endpoints_Private_UserCards = "user/cards";                       // POST
-    // protected const string Endpoints_Private_TicketToken = "ticket/token";                   // GET
-    // protected const string Endpoints_Private_FenerbahceToken = "user/fb-token";              // POST
+    // Public Contents
+    private const string v4_Public_ContentsCountries_Endpoint = "contents/countries";               // GET
+    private const string v4_Public_ContentsCities_Endpoint = "contents/cities";                     // GET
+    private const string v4_Public_ContentsCounties_Endpoint = "contents/counties/{cityId}";        // GET
+    private const string v4_Public_ContentsProfessions_Endpoint = "contents/professions";           // GET
+    private const string v4_Public_ContentsBanners_Endpoint = "contents/banners";                   // GET
+    private const string v4_Public_ContentsFeatures_Endpoint = "contents/features";                 // GET
+
+    // Public Contents
+    private const string v4_Chart_Config_Endpoint = "chart/config";                                 // GET
+    private const string v4_Chart_History_Endpoint = "chart/history";                               // GET
+
+    // Auth Endpoints
+    private const string v4_Auth_Signup_Endpoint = "auth/sign-up";                                  // POST
+    private const string v4_Auth_SignupEmail_Endpoint = "auth/sign-up-email";                       // POST
+    private const string v4_Auth_VerifyEmail_Endpoint = "user/verify-email";                        // POST
+    private const string v4_Auth_Verification_Endpoint = "user/verification";
+    private const string v4_Auth_Forget_Endpoint = "auth/forget";
+    private const string v4_Auth_NewPassword_Endpoint = "auth/new-password";
+    private const string v4_Auth_ChangePassword_Endpoint = "auth/change-password";
+    private const string v4_Auth_Signin_Endpoint = "auth/sign-in";                                  // POST
+    private const string v4_Auth_Signout_Endpoint = "auth/sign-out";
+
+    // MFA Endpoints
+    private const string v4_MFA_Resend_Endpoint = "mfa/resend";                                     // POST
+    private const string v4_MFA_Verify_Endpoint = "mfa/verify";                                     // POST
+
+    // Private Endpoints
+    private const string v4_Private_User_Endpoint = "user";                                         // GET
+    private const string v4_Private_Transactions_Endpoint = "user/wallet/{asset}/transactions";     // GET
+    private const string v4_Private_Unregister_Endpoint = "user/unregister";
+    private const string v4_Private_G2faEnable_Endpoint = "user/g2fa-enable";
+    private const string v4_Private_G2faDisable_Endpoint = "user/g2fa-disable";
+    private const string v4_Private_ChangeEmail_Endpoint = "user/change-email";
+    private const string v4_Private_Deactivate_Endpoint = "user/deactivate";
+    private const string v4_Private_PusherAuthentication_Endpoint = "user/pusher/auth";             // POST  Request: socket_id=xxxxxx.xxxxxxx&channel_name=private-market-usdt_tl-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx     Response: {"auth":"xxxxxxxxxxxxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
+
+    // Order Endpoints (Private)
+    private const string v4_Orders_Endpoint = "orders";                                             // POST
+    private const string v4_OrderGet_Endpoint = "orders/{id}";                                      // GET
+    private const string v4_OrdersCancel_Endpoint = "orders/cancel";                                // POST
+    private const string v4_OrdersCancelAll_Endpoint = "orders/cancel/all";                         // POST
+    private const string v4_UserMarketOrders_Endpoint = "user/market/{symbol}/orders";              // GET
+    private const string v4_OrdersHistory_Endpoint = "history";                                     // history?page=     &per_page=
+    // GET https://web.paribu.com/history?page=1&per_page=25
+    // Request : {"processes":["buy","sell"]}
+    // Response: {"message":{"display":{"component":"none","content":"status"},"severity":"success"},"payload":[{"entity":"order","uid":"lm7z8j53-60dx-7824-r6o3-91wkgq2nrpoo","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"limit","price":21.671,"amount":1156.56,"total":25063.81176,"remaining_amount":0,"average":21.671,"condition":null,"status":"close","created_at":"2023-04-22T14:44:04.000000Z","closed_at":"2023-04-22T14:44:26.000000Z","opened_at":"2023-04-22T14:44:04.000000Z"},{"entity":"order","uid":"nm32er0w-687v-580w-3l1p-v4pgk51dyloo","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"limit","price":20.226,"amount":2367.25,"total":47879.9985,"remaining_amount":0,"average":20.226,"condition":null,"status":"close","created_at":"2023-04-17T04:31:37.000000Z","closed_at":"2023-04-17T04:31:59.000000Z","opened_at":"2023-04-17T04:31:37.000000Z"},{"entity":"order","uid":"65k42o7y-3dmx-z6pg-4e15-9z08lqg1jnpo","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"limit","price":20.268,"amount":2666.25,"total":54039.555,"remaining_amount":2367.25,"average":20.268,"condition":null,"status":"close","created_at":"2023-04-17T04:00:06.000000Z","closed_at":"2023-04-17T04:31:15.000000Z","opened_at":"2023-04-17T04:00:06.000000Z"},{"entity":"order","uid":"65k42o7y-3dmx-z6pq-wrk5-9z08lqg1jnpo","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"market","price":19.92,"amount":97.77,"total":1850.49279,"remaining_amount":0,"average":19.92,"condition":null,"status":"close","created_at":"2023-04-08T20:49:12.000000Z","closed_at":"2023-04-08T20:49:12.000000Z","opened_at":"2023-04-08T20:49:12.000000Z"},{"entity":"order","uid":"1yoez43m-dw6v-pzd5-e4dl-x5ngk0jpq82o","user_uid":"02l7g1e5-rjno-qde0-de3x-943pvzwdmy6k","market":"usdt_tl","trade":"sell","type":"limit","price":19.668,"amount":500,"total":9834,"remaining_amount":0,"average":19.668,"condition":null,"status":"close","created_at":"2023-04-02T12:15:07.000000Z","closed_at":"2023-04-02T12:15:30.000000Z","opened_at":"2023-04-02T12:15:07.000000Z"}],"meta":{"pagination":{"total":2,"per_page":25,"current_page":1,"last_page":1}}}
+
+    // Optional: ended_at, started_at, currencies
+    // {"processes":["buy","sell"],"ended_at":"2023-05-01T11:44:45.609Z","started_at":"2023-02-01T11:44:45.609Z","currencies":["usdt"]}
+
+    // tüm prosessler: {processes: ["buy","sell", "deposit", "withdraw"]
+
+
+
+
+
+
+
+    // Alarm Endpoints (Private)
+    private const string v4_Alarm_Set_Endpoint = "alarm";                                           // POST
+    // Request : {"market":"usdt_tl","trigger_price":"21.000"}
+    // Response: {"message":{"display":{"component":"snackbar","content":"status"},"title":{"langkey":"system_messages.alarm_set","params":{"market":"USDT-TL"}},"severity":"success","buttons":[{"severity":"dark","action":{"name":"close","target":"_self"},"label":{"langkey":"system_messages.close"}}]},"payload":{"uid":"e1dwjk9p-x85r-756w-dz21-lg26yovz34n0","user_uid":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx","market":"usdt_tl","direction":"up","trigger_price":21,"creation_price":20.77,"created_at":"2023-05-01T11:13:35.000000Z"},"meta":null}
+    // Request : {"market":"usdt_tl","trigger_price":"20.000"}
+    // Response: {"message":{"display":{"component":"snackbar","content":"status"},"title":{"langkey":"system_messages.alarm_set","params":{"market":"USDT-TL"}},"severity":"success","buttons":[{"severity":"dark","action":{"name":"close","target":"_self"},"label":{"langkey":"system_messages.close"}}]},"payload":{"uid":"znp8v5k6-xw2m-qmdk-nv14-q3ojyge490d1","user_uid":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx","market":"usdt_tl","direction":"down","trigger_price":20,"creation_price":20.769,"created_at":"2023-05-01T11:14:30.000000Z"},"meta":null}
+
+    private const string v4_Alarm_Delete_Endpoint = "alarm/{id}";                                   // DELETE
+    // https://web.paribu.com/alarm/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    // {"message":{"display":{"component":"snackbar","content":"status"},"title":{"langkey":"system_messages.alarm_canceled","params":{"market":"USDT-TL"}},"severity":"success"},"payload":{"deleted":true},"meta":null}
+
+    private const string v4_Alarm_DeleteAll_Endpoint = "alarm/all";                                 // DELETE
+
+    // Address Endpoints (Private)
+    private const string v4_Address_Endpoint = "addresses";
+    private const string v4_AddressAssign_Endpoint = "addresses/assign";
+    private const string v4_AddressValidate_Endpoint = "validate/address";
+    private const string v4_Address_Delete_Endpoint = "addresses/{id}";                             // DELETE
+    private const string v4_Address_DeleteAll_Endpoint = "alarm/all";                               // DELETE
+
+    // Notification Endpoints (Private)
+    private const string v4_Notification_Endpoint = "notification";
+    private const string v4_NotificationSettings_Endpoint = "notification/settings";
+    private const string v4_NotificationPushToken_Endpoint = "notification/push-token";
+    private const string v4_NotificationRead_Endpoint = "notification/read/{id}";
+    private const string v4_NotificationReadAll_Endpoint = "notification/read/all";
+
+    // Address Endpoints (Private)
+    private const string v4_AnnouncementSettings_Endpoint = "announcement/settings";
+
+    // Withdrawal Endpoints (Private)
+    private const string v4_Withdraws_Endpoint = "withdraws";
+    private const string v4_WithdrawsCancel_Endpoint = "withdraws/{id}";                            // DELETE
+
+    // Favorite Endpoints (Private)
+    private const string v4_Favorite_Endpoint = "favorite";                                         // POST (Add/Remove)    Request: {"market":"usdt_tl"}    Response: {"message":{"display":{"component":"snackbar","content":"status"},"title":{"langkey":"system_messages.favorite_added","params":{"market":"USDT-TL"}},"severity":"success"},"payload":null,"meta":null}
+
+    // Donations Endpoints
+    private const string v4_Donations_Initials_Endpoint = "donations/initial";
+    private const string v4_Donations_Donate_Endpoint = "donations/donate";
     #endregion
 
     #region Constructor
@@ -47,19 +119,20 @@ public class ParibuRestClient : RestApiClient
     {
     }
 
-    public ParibuRestClient(ParibuRestClientOptions options) : base("Paribu Rest Api", options)
+    public string DeviceId { get; set; }
+    public ParibuRestClient(ParibuRestClientOptions options) : base("Paribu (Unofficial) Rest Api", options)
     {
-        DeviceId = Guid.NewGuid().ToString();
+        DeviceId = Guid.NewGuid().ToString().Replace("-", "");
     }
     #endregion
 
-    #region Common Methods
-    public virtual void SetDeviceId(string deviceId)
+    #region Public Methods
+    public void SetDeviceId(string deviceId)
     {
         this.DeviceId = deviceId;
     }
 
-    public virtual void SetAccessToken(string token)
+    public void SetAccessToken(string token)
     {
         SetApiCredentials(new ApiCredentials(token, "-----DUMMY-SECRET-----"));
     }
@@ -71,7 +144,20 @@ public class ParibuRestClient : RestApiClient
         if (error["message"] == null)
             return new ServerError(error.ToString());
 
-        return new ServerError(ParibuErrorCode, (string)error["message"], null);
+        if (error["message"].ToString() == "Forbidden")
+            return new ServerError(-1, "Forbidden");
+
+        if (error["message"]["title"] == null && error["message"]["description"] == null)
+            return new ServerError(error.ToString());
+
+        if (error["message"]["title"]["langkey"] == null && error["message"]["description"]["langkey"] == null)
+            return new ServerError(error.ToString());
+
+        var errorMessage =
+        $"Title: {error["message"]?["title"]?["langkey"]}\n" +
+        $"Description: {error["message"]?["description"]?["langkey"]}";
+
+        return new ServerError(-1, errorMessage);
     }
 
     protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
@@ -79,517 +165,266 @@ public class ParibuRestClient : RestApiClient
     #endregion
 
     #region Internal Methods
-    internal Uri GetUri(string endpoint)
+    internal Dictionary<string, string> ParibuAppHeaders()
     {
-        return new Uri($"{ClientOptions.BaseAddress.TrimEnd('/')}/{endpoint}");
-    }
+        /*
+        Valid Devices
+        - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62
+        - test
+        - Android
+        - Windows
 
-    internal virtual Dictionary<string, string> ParibuAppHeaders()
-    {
+        Valid Platforms
+        - Android
+        - Windows
+        */
         return new Dictionary<string, string>
         {
-            { "user-agent", "ParibuApp/345 (Android 12)" },
-            { "x-app-version", "345" },
-            { "x-device", "Paribu.Api" },
+            { "user-agent", "ParibuApp/403 (Android 12)" },
+            { "platform", "Android" },
+            { "device", "Android" },
+            { "version", "4.0.3" },
             { "pragma-cache-local", this.DeviceId }
         };
     }
 
-    internal async Task<RestCallResult<T>> ExecuteAsync<T>(Uri uri, HttpMethod method, CancellationToken cancellationToken, bool signed = false, Dictionary<string, object> queryParameters = null, Dictionary<string, object> bodyParameters = null, Dictionary<string, string> headerParameters = null, ArraySerialization? serialization = null, JsonSerializer deserializer = null, bool ignoreRatelimit = false, int requestWeight = 1) where T : class
-    {
-        var result = await SendRequestAsync<T>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, serialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
-        if (!result) return result.AsError<T>(result.Error!);
+    internal Uri GetUri(string endpoint) => new Uri($"{ClientOptions.BaseAddress.TrimEnd('/')}/{endpoint}");
 
+    internal async Task<RestCallResult<string>> ExecuteAsync(Uri uri, HttpMethod method, CancellationToken cancellationToken, bool signed = false, Dictionary<string, object> queryParameters = null, Dictionary<string, object> bodyParameters = null, Dictionary<string, string> headerParameters = null, ArraySerialization? serialization = null, JsonSerializer deserializer = null, bool ignoreRatelimit = false, int requestWeight = 1)
+    {
+        // Get Original Cultures
+        var currentCulture = Thread.CurrentThread.CurrentCulture;
+        var currentUICulture = Thread.CurrentThread.CurrentUICulture;
+
+        // Set Cultures
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+        // Do Request
+        if (headerParameters == null) headerParameters = ParibuAppHeaders();
+        else ParibuAppHeaders().ToList().ForEach(x => headerParameters[x.Key] = x.Value);
+        var result = await SendRequestAsync<string>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, serialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
+
+        // Set Orifinal Cultures
+        Thread.CurrentThread.CurrentCulture = currentCulture;
+        Thread.CurrentThread.CurrentUICulture = currentUICulture;
+
+        // Return
+        if (!result) return result.AsError<string>(result.Error!);
         return result.As(result.Data);
+    }
+
+    internal async Task<RestCallResult<T>> ExecuteAsync<T>(Uri uri, HttpMethod method, CancellationToken cancellationToken, bool signed = false, Dictionary<string, object> queryParameters = null, Dictionary<string, object> bodyParameters = null, Dictionary<string, string> headerParameters = null, ArraySerialization? serialization = null, JsonSerializer deserializer = null, bool ignoreRatelimit = false, int requestWeight = 1)
+    {
+        // Get Original Cultures
+        var currentCulture = Thread.CurrentThread.CurrentCulture;
+        var currentUICulture = Thread.CurrentThread.CurrentUICulture;
+
+        // Set Cultures
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+        // Do Request
+        if (headerParameters == null) headerParameters = ParibuAppHeaders();
+        else ParibuAppHeaders().ToList().ForEach(x => headerParameters[x.Key] = x.Value);
+        var result = await SendRequestAsync<T>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, serialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
+
+        // Set Orifinal Cultures
+        Thread.CurrentThread.CurrentCulture = currentCulture;
+        Thread.CurrentThread.CurrentUICulture = currentUICulture;
+
+        // Return
+        if (!result) return result.AsError<T>(result.Error!);
+        return result.As(result.Data);
+    }
+
+    internal async Task<RestCallResult<T>> SendParibuRequestAsync<T>(Uri uri, HttpMethod method, CancellationToken cancellationToken, bool signed = false, Dictionary<string, object> queryParameters = null, Dictionary<string, object> bodyParameters = null, Dictionary<string, string> headerParameters = null, ArraySerialization? serialization = null, JsonSerializer deserializer = null, bool ignoreRatelimit = false, int requestWeight = 1)
+    {
+        // Get Original Cultures
+        var currentCulture = Thread.CurrentThread.CurrentCulture;
+        var currentUICulture = Thread.CurrentThread.CurrentUICulture;
+
+        // Set Cultures
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+        // Do Request
+        if (headerParameters == null) headerParameters = ParibuAppHeaders();
+        else ParibuAppHeaders().ToList().ForEach(x => headerParameters[x.Key] = x.Value);
+        var result = await SendRequestAsync<ParibuRestApiResponse<T>>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, serialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
+
+        // Set Orifinal Cultures
+        Thread.CurrentThread.CurrentCulture = currentCulture;
+        Thread.CurrentThread.CurrentUICulture = currentUICulture;
+
+        // Return
+        if (!result) return result.AsError<T>(result.Error!);
+        if (result.Data.Payload == null)
+        {
+            if (result.Data.Message != null)
+            {
+                if ((result.Data.Message.Title != null || result.Data.Message.Description != null))
+                {
+                    var errorMessage =
+                        $"Title: {result.Data.Message.Title?.LanguageKey}\n" +
+                        $"Description: {result.Data.Message.Description?.LanguageKey}";
+                    return result.AsError<T>(new CallError(errorMessage));
+                }
+            }
+        }
+        return result.As(result.Data.Payload);
     }
     #endregion
 
     #region Api Methods
-    /// <summary>
-    /// Gets Initials
-    /// </summary>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuInitials>> GetInitialsAsync(CancellationToken ct = default)
+    public async Task<RestCallResult<bool>> GetHealthAsync(CancellationToken ct = default)
     {
-        var result = await ExecuteAsync<ParibuRestApiResponse<ParibuInitials>>(GetUri(Endpoints_Public_Initials), method: HttpMethod.Get, ct, signed: false).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuInitials>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuInitials>(new ParibuRestApiError(null, string.Empty, null));
+        var result = await ExecuteAsync<IEnumerable<object>>(GetUri(v4_Public_Health_Endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        if (!result.Success) return result.AsError<bool>(result.Error);
 
-        return result.As(result.Data.Data);
+        return result.As(true);
     }
 
-    /// <summary>
-    /// Gets all tickers
-    /// </summary>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<Dictionary<string, ParibuTicker>>> GetTickersAsync(CancellationToken ct = default)
-    {
-        var result = await ExecuteAsync<ParibuRestApiResponse<ParibuTickers>>(GetUri(Endpoints_Public_Ticker), method: HttpMethod.Get, ct, signed: false).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<Dictionary<string, ParibuTicker>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<Dictionary<string, ParibuTicker>>(new ParibuRestApiError(null, string.Empty, null));
+    public async Task<RestCallResult<ParibuExchangeInformation>> GetExchangeInformationAsync(CancellationToken ct = default)
+        => await SendParibuRequestAsync<ParibuExchangeInformation>(GetUri(v4_Public_Config_Endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
 
-        return result.As(result.Data.Data.Data);
-    }
+    public async Task<RestCallResult<Dictionary<string, ParibuTicker>>> GetTickersAsync(CancellationToken ct = default)
+        => await SendParibuRequestAsync<Dictionary<string, ParibuTicker>>(GetUri(v4_Public_Ticker_Endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+
+    public async Task<RestCallResult<Dictionary<string, IEnumerable<decimal>>>> GetPriceSeriesAsync(CancellationToken ct = default)
+        => await SendParibuRequestAsync<Dictionary<string, IEnumerable<decimal>>>(GetUri(v4_Public_PriceSeries_Endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+
+    public async Task<RestCallResult<ParibuOrderBook>> GetOrderBookAsync(string symbol, CancellationToken ct = default)
+        => await SendParibuRequestAsync<ParibuOrderBook>(GetUri(v4_Public_Orderbook_Endpoint.Replace("{symbol}", symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
+
+    public async Task<RestCallResult<Dictionary<string, ParibuMatch>>> GetLatestMatchesAsync(string symbol, CancellationToken ct = default)
+        => await SendParibuRequestAsync<Dictionary<string, ParibuMatch>>(GetUri(v4_Public_LatestMatches_Endpoint.Replace("{symbol}", symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
+
+    public async Task<RestCallResult<IEnumerable<ParibuKline>>> GetKlinesAsync(string symbol, ParibuKlineInterval interval, DateTime start, DateTime end, int limit, CancellationToken ct = default)
+        => await GetKlinesAsync(symbol, interval, start.ConvertToMilliseconds(), end.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
 
     /// <summary>
-    /// Gets Market Data for a specific Symbol
+    /// Gets Symbol Klines
     /// </summary>
-    /// <param name="symbol">Market Symbol</param>
-    /// <param name="interval">Chart Term</param>
-    /// <param name="ct">Cancellation Token</param>
+    /// <param name="symbol"></param>
+    /// <param name="interval"></param>
+    /// <param name="start">Epoch in Seconds</param>
+    /// <param name="end">Epoch in Seconds</param>
+    /// <param name="limit"></param>
+    /// <param name="ct"></param>
     /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuMarketData>> GetMarketDataAsync(string symbol, ChartInterval interval = ChartInterval.OneDay, CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<ParibuKline>>> GetKlinesAsync(string symbol, ParibuKlineInterval interval, long start, long end, int limit, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
-            {
-                { "interval", JsonConvert.SerializeObject(interval, new ChartIntervalConverter(false)) }
-            };
-        var result = await ExecuteAsync<ParibuRestApiResponse<MarketData>>(GetUri(Endpoints_Public_Market.Replace("{symbol}", symbol)), method: HttpMethod.Get, ct, signed: false, queryParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuMarketData>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuMarketData>(new ParibuRestApiError(null, string.Empty, null));
-
-        var pmd = new ParibuMarketData
         {
-            ChartData = new ParibuChartData(),
-            OrderBook = new ParibuOrderBook(),
-            MarketMatches = result.Data.Data.MarketMatches,
-            UserMatches = result.Data.Data.UserMatches != null ? result.Data.Data.UserMatches : new List<ParibuUserMatch>(),
+            { "symbol", symbol },
+            { "resolution", interval.GetLabel() },
+            { "countback", limit },
+            { "from", start },
+            { "to", end },
         };
 
-        // Candles
-        var min = result.Data.Data.ChartData.OpenTimeData.Count();
-        min = Math.Min(min, result.Data.Data.ChartData.VolumeData.Count());
-        min = Math.Min(min, result.Data.Data.ChartData.ClosePriceData.Count());
-        pmd.ChartData.Symbol = result.Data.Data.ChartData.Symbol;
-        pmd.ChartData.Interval = result.Data.Data.ChartData.Interval;
-        for (var i = 0; i < min; i++)
+        var result = await ExecuteAsync<ParibuChartHistory>(GetUri(v4_Chart_History_Endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        if (!result) return result.AsError<IEnumerable<ParibuKline>>(result.Error);
+        return result.As(ParibuKline.ImportChartHistory(result.Data));
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="countryCode">+90</param>
+    /// <param name="password"></param>
+    /// <param name="ct"></param>
+    /// <returns></returns>
+    public async Task<RestCallResult<ParibuMfaStatus>> LoginAsync(string countryCode, string mobile, string password, CancellationToken ct = default)
+    {
+        var parameters = new Dictionary<string, object>
         {
-            pmd.ChartData.Candles.Add(new ParibuCandle
-            {
-                OpenTime = result.Data.Data.ChartData.OpenTimeData.ElementAt(i),
-                OpenDateTime = result.Data.Data.ChartData.OpenTimeData.ElementAt(i).FromUnixTimeSeconds(),
-                ClosePrice = result.Data.Data.ChartData.ClosePriceData.ElementAt(i),
-                Volume = result.Data.Data.ChartData.VolumeData.ElementAt(i),
-            });
-        }
+            { "country_code", countryCode},
+            { "mobile", mobile},
+            { "password", password},
+        };
 
-        // Order Book
-        foreach (var ask in result.Data.Data.OrderBook.Asks.Data) pmd.OrderBook.Asks.Add(new ParibuOrderBookEntry { Price = ask.Key, Amount = ask.Value });
-        foreach (var bid in result.Data.Data.OrderBook.Bids.Data) pmd.OrderBook.Bids.Add(new ParibuOrderBookEntry { Price = bid.Key, Amount = bid.Value });
-
-        return result.As(pmd);
+        return await SendParibuRequestAsync<ParibuMfaStatus>(GetUri(v4_Auth_Signin_Endpoint), HttpMethod.Post, ct, false, bodyParameters: parameters).ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// Gets Chart Data for a specific Symbol
-    /// </summary>
-    /// <param name="symbol">Market Symbol</param>
-    /// <param name="interval">Chart Term</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuChartData>> GetChartDataAsync(string symbol, ChartInterval interval = ChartInterval.OneDay, CancellationToken ct = default)
+    public async Task<RestCallResult<ParibuAuthToken>> LoginVerifyAsync(string token, string code, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
-            {
-                { "interval", JsonConvert.SerializeObject(interval, new ChartIntervalConverter(false)) }
-            };
-        var result = await ExecuteAsync<ParibuRestApiResponse<ChartData>>(GetUri(Endpoints_Public_Chart.Replace("{symbol}", symbol)), method: HttpMethod.Get, ct, signed: false, queryParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuChartData>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuChartData>(new ParibuRestApiError(null, string.Empty, null));
-
-        // Candles
-        var chart = new ParibuChartData();
-        var min = result.Data.Data.OpenTimeData.Count();
-        min = Math.Min(min, result.Data.Data.VolumeData.Count());
-        min = Math.Min(min, result.Data.Data.ClosePriceData.Count());
-        chart.Symbol = result.Data.Data.Symbol;
-        chart.Interval = result.Data.Data.Interval;
-        for (var i = 0; i < min; i++)
         {
-            chart.Candles.Add(new ParibuCandle
-            {
-                OpenTime = result.Data.Data.OpenTimeData.ElementAt(i),
-                OpenDateTime = result.Data.Data.OpenTimeData.ElementAt(i).FromUnixTimeSeconds(),
-                ClosePrice = result.Data.Data.ClosePriceData.ElementAt(i),
-                Volume = result.Data.Data.VolumeData.ElementAt(i),
-            });
-        }
+            { "token", token},
+            { "code", code},
+        };
 
-        // Return
-        return result.As(chart);
+        return await SendParibuRequestAsync<ParibuAuthToken>(GetUri(v4_MFA_Verify_Endpoint), HttpMethod.Post, ct, false, bodyParameters: parameters).ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// Registers new user
-    /// </summary>
-    /// <param name="name">Name Surname</param>
-    /// <param name="email">Email Address</param>
-    /// <param name="mobile">10 digits Mobile Number (532xxxxxxx)</param>
-    /// <param name="password">Account Password</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuTwoFactorToken>> RegisterAsync(string name, string email, string mobile, string password, CancellationToken ct = default)
+    public async Task<RestCallResult<ParibuUserAccount>> GetUserAccountAsync(CancellationToken ct = default)
+        => await SendParibuRequestAsync<ParibuUserAccount>(GetUri(v4_Private_User_Endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+
+    public async Task<RestCallResult<ParibuOrder>> PlaceOrderAsync(string symbol, ParibuOrderSide side, ParibuOrderType type, decimal? price = null, decimal? condition = null, decimal? amount = null, decimal? total = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
-            {
-                { "name", name},
-                { "email", email},
-                { "mobile", mobile},
-                { "password", password},
-            };
-
-        var result = await ExecuteAsync<ParibuRestApiResponse<ParibuTwoFactorToken>>(GetUri(Endpoints_Public_Register), method: HttpMethod.Post, ct, signed: false, bodyParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuTwoFactorToken>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuTwoFactorToken>(new ParibuRestApiError(null, string.Empty, null));
-
-        result.Data.Data.Message = result.Data.Message;
-        return result.As(result.Data.Data);
-    }
-
-    /// <summary>
-    /// Login Method
-    /// </summary>
-    /// <param name="mobile">10 digits Mobile Number (532xxxxxxx)</param>
-    /// <param name="password">Account Password</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuTwoFactorToken>> LoginAsync(string mobile, string password, CancellationToken ct = default)
-    {
-        var parameters = new Dictionary<string, object>
-            {
-                { "mobile", mobile},
-                { "password", password},
-            };
-
-        var result = await ExecuteAsync<ParibuRestApiResponse<ParibuTwoFactorToken>>(GetUri(Endpoints_Public_Login), method: HttpMethod.Post, ct, signed: false, bodyParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuTwoFactorToken>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuTwoFactorToken>(new ParibuRestApiError(null, string.Empty, null));
-
-        result.Data.Data.Message = result.Data.Message;
-        return result.As(result.Data.Data);
-    }
-
-    /// <summary>
-    /// Register TFA Method
-    /// </summary>
-    /// <param name="token">Register TFA Token</param>
-    /// <param name="code">PIN Code</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuTwoFactorUser>> RegisterTwoFactorAsync(string token, string code, CancellationToken ct = default)
-    {
-        var parameters = new Dictionary<string, object>
-            {
-                { "token", token},
-                { "code", code},
-            };
-
-        var result = await ExecuteAsync<ParibuRestApiResponse<ParibuTwoFactorUser>>(GetUri(Endpoints_Public_TwoFactor), method: HttpMethod.Post, ct, signed: false, bodyParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuTwoFactorUser>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuTwoFactorUser>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data);
-    }
-
-    /// <summary>
-    /// TFA Method for Login
-    /// </summary>
-    /// <param name="token">Login TFA Token</param>
-    /// <param name="code">PIN Code</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuTwoFactorUser>> LoginTwoFactorAsync(string token, string code, bool setAccessToken = true, CancellationToken ct = default)
-    {
-        var parameters = new Dictionary<string, object>
-            {
-                { "token", token},
-                { "code", code},
-            };
-
-        var result = await ExecuteAsync<ParibuRestApiResponse<ParibuTwoFactorUser>>(GetUri(Endpoints_Public_TwoFactor), method: HttpMethod.Post, ct, signed: false, bodyParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuTwoFactorUser>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuTwoFactorUser>(new ParibuRestApiError(null, string.Empty, null));
-
-        if (setAccessToken && (result.Data.Data.Subject == TwoFactorSubject.Register || result.Data.Data.Subject == TwoFactorSubject.Login))
         {
-            if (!string.IsNullOrEmpty(result.Data.Data.Token))
-                SetAccessToken(result.Data.Data.Token);
-        }
+            { "market", symbol},
+            { "trade", side.GetLabel() },
+            { "type", type.GetLabel() },
+        };
+        parameters.AddOptionalParameter("price", price);
+        parameters.AddOptionalParameter("condition", condition);
+        parameters.AddOptionalParameter("amount", amount);
+        parameters.AddOptionalParameter("total", total);
 
-        return result.As(result.Data.Data);
+        return await SendParibuRequestAsync<ParibuOrder>(GetUri(v4_Orders_Endpoint), method: HttpMethod.Post, ct, signed: true, bodyParameters: parameters).ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// TFA Method for TFA Toggle Action
-    /// </summary>
-    /// <param name="token">Toggle TFA Token</param>
-    /// <param name="code">PIN Code</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuTwoFactorToggle>> ToggleTwoFactorAsync(string token, string code, CancellationToken ct = default)
+    public async Task<RestCallResult<ParibuOrder>> GetOrderAsync(string orderId, CancellationToken ct = default)
+        => await SendParibuRequestAsync<ParibuOrder>(GetUri(v4_OrderGet_Endpoint.Replace("{id}", orderId)), method: HttpMethod.Get, ct, signed: true).ConfigureAwait(false);
+
+    public async Task<RestCallResult<ParibuCancelResponse>> CancelOrderAsync(string orderId, CancellationToken ct = default)
+        => await CancelOrdersAsync(new List<string> { orderId }, ct).ConfigureAwait(false);
+
+    public async Task<RestCallResult<ParibuCancelResponse>> CancelOrdersAsync(IEnumerable<string> orderIds, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
-            {
-                { "token", token},
-                { "code", code},
-            };
+        {
+            { "ids", orderIds},
+        };
 
-        var result = await ExecuteAsync<ParibuRestApiResponse<ParibuTwoFactorToggle>>(GetUri(Endpoints_Public_TwoFactor), method: HttpMethod.Post, ct, signed: false, bodyParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuTwoFactorToggle>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuTwoFactorToggle>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data);
+        return await SendParibuRequestAsync<ParibuCancelResponse>(GetUri(v4_OrdersCancel_Endpoint), HttpMethod.Post, ct, signed: true, bodyParameters: parameters).ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// Gets Open Orders
-    /// </summary>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<IEnumerable<ParibuOrder>>> GetOpenOrdersAsync(CancellationToken ct = default)
-    {
-        var result = await ExecuteAsync<ParibuRestApiResponse<Dictionary<string, ParibuOrder>>>(GetUri(Endpoints_Private_OpenOrders), method: HttpMethod.Get, ct, signed: true).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<IEnumerable<ParibuOrder>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<IEnumerable<ParibuOrder>>(new ParibuRestApiError(null, string.Empty, null));
+    public async Task<RestCallResult<ParibuCancelResponse>> CancelAllOrdersAsync(CancellationToken ct = default)
+        => await SendParibuRequestAsync<ParibuCancelResponse>(GetUri(v4_OrdersCancelAll_Endpoint), HttpMethod.Post, ct, signed: true).ConfigureAwait(false);
 
-        return result.As(result.Data.Data.Values.Select(x => x));
-    }
+    public async Task<RestCallResult<IEnumerable<ParibuOrder>>> GetOrdersAsync(string symbol, CancellationToken ct = default)
+        => await SendParibuRequestAsync<IEnumerable<ParibuOrder>>(GetUri(v4_UserMarketOrders_Endpoint.Replace("{symbol}", symbol)), method: HttpMethod.Get, ct, signed: true).ConfigureAwait(false);
 
     /// <summary>
-    /// Place an Order
+    /// Query Order History
     /// </summary>
-    /// <param name="symbol">Mandatory</param>
-    /// <param name="side">Mandatory</param>
-    /// <param name="type">Mandatory</param>
-    /// <param name="total">Mandatory</param>
-    /// <param name="amount">Mandatory for Limit Orders</param>
-    /// <param name="price">Mandatory for Limit Orders</param>
-    /// <param name="condition">Condition Price</param>
-    /// <param name="ct">Cancellation Token</param>
+    /// <param name="processes">Valid Values: buy, sell, deposit, withdraw</param>
+    /// <param name="assets">Asset Filter</param>
+    /// <param name="page"></param>
+    /// <param name="rows"></param>
+    /// <param name="startDate"></param>
+    /// <param name="endDate"></param>
+    /// <param name="ct"></param>
     /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuOrder>> PlaceOrderAsync(
-        string symbol,
-        OrderSide side,
-        OrderType type,
-        decimal? total = null,
-        decimal? amount = null,
-        decimal? price = null,
-        decimal? condition = null,
-        CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<ParibuOrder>>> GetOrdersHistoryAsync(List<string> processes, List<string> assets = null, DateTime? startDate = null, DateTime? endDate = null, int page = 1, int rows = 25, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
-            {
-                { "market", symbol},
-                { "trade", JsonConvert.SerializeObject(side, new OrderSideConverter(false)) },
-                { "type", JsonConvert.SerializeObject(type, new OrderTypeConverter(false)) },
-            };
-        if (amount.HasValue) parameters.AddOptionalParameter("amount", amount.Value.ToString(CultureInfo.InvariantCulture));
-        if (total.HasValue) parameters.AddOptionalParameter("total", amount.Value.ToString(CultureInfo.InvariantCulture));
-        if (price.HasValue) parameters.AddOptionalParameter("price", price.Value.ToString(CultureInfo.InvariantCulture));
-        if (condition.HasValue) parameters.AddOptionalParameter("condition", condition.Value.ToString(CultureInfo.InvariantCulture));
+        {
+            { "processes", processes },
+            { "page", page },
+            { "per_page", rows },
+        };
+        if (assets != null && assets.Any()) parameters.AddOptionalParameter("currencies", assets);
+        parameters.AddOptionalParameter("started_at", startDate);
+        parameters.AddOptionalParameter("ended_at", endDate);
 
-        var result = await ExecuteAsync<ParibuRestApiResponse<IEnumerable<ParibuOrder>>>(GetUri(Endpoints_Private_PlaceOrder), method: HttpMethod.Post, ct, signed: true, bodyParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuOrder>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuOrder>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data.FirstOrDefault());
-    }
-
-    /// <summary>
-    /// Cancels Order with specific Order Id
-    /// </summary>
-    /// <param name="orderId">Order Id</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns>List of order Ids for canceled orders</returns>
-    public virtual async Task<RestCallResult<IEnumerable<string>>> CancelOrderAsync(string orderId, CancellationToken ct = default)
-    {
-        var result = await ExecuteAsync<ParibuRestApiResponse<IEnumerable<string>>>(GetUri(Endpoints_Private_CancelOrder.Replace("{uid}", orderId)), method: HttpMethod.Delete, ct, signed: true).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data);
-    }
-
-    /// <summary>
-    /// symbol olarak market sembolü (btc-tl, usdt-tl gibi) iletilirse o marketteki tüm açık emirleri iptal eder. 
-    /// symbol olarak "all" iletilirse tüm marketteki tüm açık emirleri iptal eder. 
-    /// Cancels all open orders for a specific market symbol
-    /// </summary>
-    /// <param name="symbol">Market Symbol</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<IEnumerable<string>>> CancelOrdersAsync(string symbol, CancellationToken ct = default)
-    {
-        var result = await ExecuteAsync<ParibuRestApiResponse<IEnumerable<string>>>(GetUri(Endpoints_Private_CancelOrder.Replace("{uid}", symbol)), method: HttpMethod.Delete, ct, signed: true).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data);
-    }
-
-    /// <summary>
-    /// Gets User Initials
-    /// </summary>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuUserInitials>> GetUserInitialsAsync(CancellationToken ct = default)
-    {
-        var result = await ExecuteAsync<ParibuRestApiResponse<ParibuLoggedInInitials>>(GetUri(Endpoints_Public_Initials), method: HttpMethod.Get, ct, signed: true).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuUserInitials>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuUserInitials>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data.UserInfo);
-    }
-
-    /// <summary>
-    /// Gets Balances
-    /// </summary>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<Dictionary<string, ParibuAssetBalance>>> GetBalancesAsync(CancellationToken ct = default)
-    {
-        var result = await GetUserInitialsAsync(ct);
-        if (!result.Success) return result.AsError<Dictionary<string, ParibuAssetBalance>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (result.Data == null) return result.AsError<Dictionary<string, ParibuAssetBalance>>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.AssetBalances);
-
-    }
-
-    /// <summary>
-    /// Gets Alerts
-    /// </summary>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<IEnumerable<ParibuAlert>>> GetAlertsAsync(CancellationToken ct = default)
-    {
-        var result = await GetUserInitialsAsync(ct);
-        if (!result.Success) return result.AsError<IEnumerable<ParibuAlert>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (result.Data == null) return result.AsError<IEnumerable<ParibuAlert>>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Alerts);
-    }
-
-    /// <summary>
-    /// Create new Price Alert
-    /// </summary>
-    /// <param name="symbol">Market Symbol</param>
-    /// <param name="price">Alert Price</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<bool>> SetAlertAsync(string symbol, decimal price, CancellationToken ct = default)
-    {
-        var parameters = new Dictionary<string, object>
-            {
-                { "market", symbol},
-                { "trigger_price", price.ToString(CultureInfo.InvariantCulture)},
-            };
-
-        var result = await ExecuteAsync<ParibuRestApiResponse<IEnumerable<object>>>(GetUri(Endpoints_Private_SetUserAlert), method: HttpMethod.Post, ct, signed: true, bodyParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<bool>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<bool>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Success);
-    }
-
-    /// <summary>
-    /// Cancels Price Alert with Alert Id
-    /// </summary>
-    /// <param name="alertId">Alert Id</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<IEnumerable<string>>> CancelAlertAsync(string alertId, CancellationToken ct = default)
-    {
-        var result = await ExecuteAsync<ParibuRestApiResponse<IEnumerable<string>>>(GetUri(Endpoints_Private_DeleteUserAlert.Replace("{uid}", alertId)), method: HttpMethod.Delete, ct, signed: true).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data);
-    }
-
-    /// <summary>
-    /// Cancels all Price Alerts with specific market symbol
-    /// </summary>
-    /// <param name="symbol">Market Symbol</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<IEnumerable<string>>> CancelAlertsAsync(string symbol, CancellationToken ct = default)
-    {
-        var result = await ExecuteAsync<ParibuRestApiResponse<IEnumerable<string>>>(GetUri(Endpoints_Private_DeleteUserAlert.Replace("{uid}", symbol)), method: HttpMethod.Delete, ct, signed: true).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data);
-    }
-
-    /// <summary>
-    /// Gets Deposit Addresses
-    /// </summary>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<IEnumerable<ParibuAddress>>> GetDepositAddressesAsync(CancellationToken ct = default)
-    {
-        var result = await GetUserInitialsAsync(ct);
-        if (!result.Success) return result.AsError<IEnumerable<ParibuAddress>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (result.Data == null) return result.AsError<IEnumerable<ParibuAddress>>(new ParibuRestApiError(null, string.Empty, null));
-
-        var addresses = new List<ParibuAddress>();
-        if (result.Data != null && result.Data.Addresses != null) addresses = result.Data.Addresses.Where(x => x.Direction == TransactionDirection.Deposit).ToList();
-
-        return result.As(addresses.AsEnumerable());
-    }
-
-    /// <summary>
-    /// Withdraw Method
-    /// </summary>
-    /// <param name="currency">Currency Symbol</param>
-    /// <param name="amount">Withdrawal Amount</param>
-    /// <param name="address">Withdrawal Address</param>
-    /// <param name="tag">Withdrawal Tag</param>
-    /// <param name="network">Withdrawal Network</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<ParibuTransaction>> WithdrawAsync(
-        string currency,
-        decimal amount,
-        string address,
-        string tag = "",
-        string network = "",
-        CancellationToken ct = default)
-    {
-        var parameters = new Dictionary<string, object>
-            {
-                { "currency", currency},
-                { "amount", amount.ToString(CultureInfo.InvariantCulture)},
-                { "address", address},
-                { "tag", tag},
-                { "network", network},
-            };
-
-        var result = await ExecuteAsync<ParibuRestApiResponse<ParibuTransaction>>(GetUri(Endpoints_Private_Withdraw), method: HttpMethod.Post, ct, signed: true, bodyParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<ParibuTransaction>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<ParibuTransaction>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data);
-    }
-
-    /// <summary>
-    /// Cancels Withdrawal Request
-    /// </summary>
-    /// <param name="withdrawalId">Withdrawal Id</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public virtual async Task<RestCallResult<IEnumerable<string>>> CancelWithdrawalAsync(string withdrawalId, CancellationToken ct = default)
-    {
-        var result = await ExecuteAsync<ParibuRestApiResponse<IEnumerable<string>>>(GetUri(Endpoints_Private_CancelWithdrawal.Replace("{uid}", withdrawalId)), method: HttpMethod.Delete, ct, signed: true).ConfigureAwait(false);
-        if (!result.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(result.Error.Code, result.Error.Message, result.Error.Data));
-        if (!result.Data.Success) return result.AsError<IEnumerable<string>>(new ParibuRestApiError(null, string.Empty, null));
-
-        return result.As(result.Data.Data);
+        return await SendParibuRequestAsync<IEnumerable<ParibuOrder>>(GetUri(v4_OrdersHistory_Endpoint), HttpMethod.Get, ct, signed: true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     #endregion
-
 }

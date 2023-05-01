@@ -5,9 +5,9 @@ public class ParibuApiAddresses
     public string ApiAddress { get; set; }
     public string WebsocketAddress { get; set; }
 
-    public static ParibuApiAddresses Default = new ParibuApiAddresses
+    public static ParibuApiAddresses Default = new()
     {
-        ApiAddress = "https://v3.paribu.com/app",
-        WebsocketAddress = "wss://ws-eu.pusher.com/app/a68d528f48f652c94c88?protocol=7&client=js&version=5.1.1&flash=false"
+        ApiAddress = "https://app.paribu.com/",
+        WebsocketAddress = "wss://ws-eu.pusher.com/app/9583280bf9e54779ac66?protocol=7&client=js&version=7.6.0&flash=false",
     };
 }

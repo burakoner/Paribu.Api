@@ -5,31 +5,35 @@ public class ParibuOrder
     [JsonProperty("uid")]
     public string Id { get; set; }
 
+    [JsonProperty("user_uid")]
+    public string UserId { get; set; }
+
     [JsonProperty("market")]
     public string Symbol { get; set; }
 
-    [JsonProperty("trade"), JsonConverter(typeof(OrderSideConverter))]
-    public OrderSide Side { get; set; }
-
-    [JsonProperty("type"), JsonConverter(typeof(OrderTypeConverter))]
-    public OrderType Type { get; set; }
-
-    [JsonProperty("price")]
+    public decimal Amount { get; set; }
+    public decimal Average { get; set; }
     public decimal? Price { get; set; }
 
-    [JsonProperty("amount")]
-    public decimal? Amount { get; set; }
+    public string Status { get; set; } // open, close
 
-    [JsonProperty("matched")]
-    public decimal? Matched { get; set; }
+    [JsonProperty("trade"), JsonConverter(typeof(LabelConverter<ParibuOrderSide>))]
+    public ParibuOrderSide Side { get; set; }
 
-    [JsonProperty("condition")]
+    [JsonProperty("type"), JsonConverter(typeof(LabelConverter<ParibuOrderType>))]
+    public ParibuOrderType Type { get; set; }
+
+    [JsonProperty("remaining_amount")]
+    public decimal RemainingAmount { get; set; }
+
+    [JsonProperty("created_at")]
+    public DateTime CreatedAt { get; set; }
+    
+    [JsonProperty("opened_at")]
+    public DateTime? OpenedAt { get; set; }
+    
+    [JsonProperty("closed_at")]
+    public DateTime? ClosedAt { get; set; }
+
     public decimal? Condition { get; set; }
-
-    // Bulabildiğim Örnekler: open, open-nomatch
-    [JsonProperty("status")]
-    public string Status { get; set; }
-
-    [JsonProperty("timestamp"), JsonConverter(typeof(TimestampSecondsConverter))]
-    public DateTime? Timestamp { get; set; }
 }
