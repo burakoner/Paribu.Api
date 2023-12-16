@@ -1,6 +1,6 @@
 ﻿namespace Paribu.Api;
 
-public class ParibuStreamClientOptions : StreamApiClientOptions
+public class ParibuStreamClientOptions : WebSocketApiClientOptions
 {
     public static ParibuStreamClientOptions Default { get; set; } = new();
 

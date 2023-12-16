@@ -100,13 +100,18 @@ public class ParibuRestClient : RestApiClient
     private const string v4_Donations_Donate_Endpoint = "donations/donate";
     #endregion
 
+    public string DeviceId { get; set; }
+
     #region Constructor
     public ParibuRestClient() : this(ParibuRestClientOptions.Default)
     {
     }
 
-    public string DeviceId { get; set; }
-    public ParibuRestClient(ParibuRestClientOptions options) : base("Paribu (Unofficial) Rest Api", options)
+    public ParibuRestClient(ParibuRestClientOptions options) : this(null, options)
+    {
+    }
+
+    public ParibuRestClient(ILogger logger, ParibuRestClientOptions options) : base(logger, options)
     {
         DeviceId = Guid.NewGuid().ToString().Replace("-", "");
     }

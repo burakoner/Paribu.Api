@@ -1,13 +1,17 @@
 ﻿namespace Paribu.Api;
 
-public partial class ParibuStreamClient : StreamApiClient
+public partial class ParibuStreamClient : WebSocketApiClient
 {
     #region Constructor/Destructor
     public ParibuStreamClient() : this(ParibuStreamClientOptions.Default)
     {
     }
 
-    public ParibuStreamClient(ParibuStreamClientOptions options) : base("Paribu (Unofficial) Stream Api", options)
+    public ParibuStreamClient(ParibuStreamClientOptions options) : this(null, options)
+    {
+    }
+
+    public ParibuStreamClient(ILogger logger, ParibuStreamClientOptions options) : base(logger, options)
     {
         AddGenericHandler("Welcome", WelcomeHandler);
     }
@@ -19,19 +23,19 @@ public partial class ParibuStreamClient : StreamApiClient
     #endregion
 
     #region Protected Methods
-    protected virtual void WelcomeHandler(StreamMessageEvent messageEvent)
+    protected virtual void WelcomeHandler(WebSocketMessageEvent messageEvent)
     {
         if (messageEvent.JsonData["event"] != null && (string)messageEvent.JsonData["event"] == "pusher:connection_established")
             return;
     }
 
-    protected override bool HandleQueryResponse<T>(StreamConnection connection, object request, JToken data, out CallResult<T> callResult)
+    protected override bool HandleQueryResponse<T>(WebSocketConnection connection, object request, JToken data, out CallResult<T> callResult)
     {
         callResult = null;
         return true;
     }
 
-    protected override bool HandleSubscriptionResponse(StreamConnection connection, StreamSubscription subscription, object request, JToken message, out CallResult<object> callResult)
+    protected override bool HandleSubscriptionResponse(WebSocketConnection connection, WebSocketSubscription subscription, object request, JToken message, out CallResult<object> callResult)
     {
         callResult = null;
 
@@ -56,7 +60,7 @@ public partial class ParibuStreamClient : StreamApiClient
         return true;
     }
 
-    protected override bool MessageMatchesHandler(StreamConnection connection, JToken data, object request)
+    protected override bool MessageMatchesHandler(WebSocketConnection connection, JToken data, object request)
     {
         if (request is ParibuStreamRequest<ParibuSocketSubscribeRequest> socRequest)
         {
@@ -76,12 +80,12 @@ public partial class ParibuStreamClient : StreamApiClient
         return false;
     }
 
-    protected override bool MessageMatchesHandler(StreamConnection connection, JToken message, string identifier)
+    protected override bool MessageMatchesHandler(WebSocketConnection connection, JToken message, string identifier)
     {
         return true;
     }
 
-    protected override async Task<bool> UnsubscribeAsync(StreamConnection connection, StreamSubscription subscription)
+    protected override async Task<bool> UnsubscribeAsync(WebSocketConnection connection, WebSocketSubscription subscription)
     {
         if (subscription == null || subscription.Request == null)
             return false;
@@ -95,7 +99,7 @@ public partial class ParibuStreamClient : StreamApiClient
         return false;
     }
 
-    protected override Task<CallResult<bool>> AuthenticateAsync(StreamConnection s)
+    protected override Task<CallResult<bool>> AuthenticateAsync(WebSocketConnection s)
     {
         throw new NotImplementedException();
     }

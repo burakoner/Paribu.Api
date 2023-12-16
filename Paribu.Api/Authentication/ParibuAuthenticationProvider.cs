@@ -15,12 +15,12 @@ public class ParibuAuthenticationProvider : AuthenticationProvider
         headers.Add("Authorization", Credentials.Key.GetString());
     }
 
-    public override void AuthenticateSocketApi()
+    public override void AuthenticateTcpSocketApi()
     {
         throw new NotImplementedException();
     }
 
-    public override void AuthenticateStreamApi()
+    public override void AuthenticateWebSocketApi()
     {
         throw new NotImplementedException();
     }
