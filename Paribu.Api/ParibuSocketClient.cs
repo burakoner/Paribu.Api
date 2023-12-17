@@ -1,17 +1,19 @@
-﻿namespace Paribu.Api;
+﻿using Paribu.Api.Models.SocketApi;
 
-public partial class ParibuStreamClient : WebSocketApiClient
+namespace Paribu.Api;
+
+public partial class ParibuSocketClient : WebSocketApiClient
 {
     #region Constructor/Destructor
-    public ParibuStreamClient() : this(ParibuStreamClientOptions.Default)
+    public ParibuSocketClient() : this(ParibuSocketClientOptions.Default)
     {
     }
 
-    public ParibuStreamClient(ParibuStreamClientOptions options) : this(null, options)
+    public ParibuSocketClient(ParibuSocketClientOptions options) : this(null, options)
     {
     }
 
-    public ParibuStreamClient(ILogger logger, ParibuStreamClientOptions options) : base(logger, options)
+    public ParibuSocketClient(ILogger logger, ParibuSocketClientOptions options) : base(logger, options)
     {
         AddGenericHandler("Welcome", WelcomeHandler);
     }
@@ -73,7 +75,7 @@ public partial class ParibuStreamClient : WebSocketApiClient
 
             // Tickers
             // Market Data
-            if (evt == "state-updated" && socRequest.Data.Channel == channel)
+            if (evt == "diff" && socRequest.Data.Channel == channel)
                 return true;
         }
 
@@ -105,37 +107,44 @@ public partial class ParibuStreamClient : WebSocketApiClient
     }
     #endregion
 
-    /*
-    public virtual async Task<CallResult<UpdateSubscription>> SubscribeToTickersAsync(Action<ParibuStreamTicker> onTickerData, Action<ParibuStreamPriceSeries> onPriceSeriesData, CancellationToken ct = default)
+    public virtual async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToTickersAsync(Action<ParibuTicker> onTickerData, CancellationToken ct = default)
     {
-        var internalHandler = new Action<StreamDataEvent<ParibuStreamResponse>>(data =>
+        var restcli = new ParibuRestClient();
+        var tickers = await restcli.GetTickersAsync();
+        var tickersDict = tickers.Success ? tickers.Data : [];
+
+        var internalHandler = new Action<WebSocketDataEvent<ParibuStreamResponse>>(data =>
         {
-            var json = JsonConvert.DeserializeObject<ParibuStreamPatch<ParibuStreamMerge<ParibuStreamTickers>>>(data.Data.Data);
-            foreach (var ticker in json.Patch.Merge.Data)
+            var json = JsonConvert.DeserializeObject<SocketPayload<SocketTickers>>(data.Data.Data);
+            foreach (var ticker in json.Payload.Data)
             {
-                if (ticker.Value.PriceSeries != null && ticker.Value.PriceSeries.Count() > 0)
-                {
-                    onPriceSeriesData(new ParibuStreamPriceSeries
-                    {
-                        Symbol = ticker.Key,
-                        Prices = ticker.Value.PriceSeries,
-                    });
-                }
-                else
-                {
-                    ticker.Value.Symbol = ticker.Key;
-                    onTickerData(ticker.Value);
-                }
+                var row = tickersDict.ContainsKey(ticker.Key) ? tickersDict[ticker.Key] : null;
+                if (row == null) continue;
+
+                if(ticker.Value.Lowest.HasValue) row.Lowest = ticker.Value.Lowest.Value;
+                if(ticker.Value.Highest.HasValue) row.Highest = ticker.Value.Highest.Value;
+                if(ticker.Value.First.HasValue) row.First = ticker.Value.First.Value;
+                if(ticker.Value.Last.HasValue) row.Last = ticker.Value.Last.Value;
+                if(ticker.Value.Volume.HasValue) row.Volume = ticker.Value.Volume.Value;
+                if(ticker.Value.QuoteVolume.HasValue) row.QuoteVolume = ticker.Value.QuoteVolume.Value;
+                if(ticker.Value.Change.HasValue) row.Change = ticker.Value.Change.Value;
+                if(ticker.Value.Percentage.HasValue) row.Percentage = ticker.Value.Percentage.Value;
+                if(ticker.Value.Percentage1H.HasValue) row.Percentage1H = ticker.Value.Percentage1H.Value;
+                if(ticker.Value.Percentage4H.HasValue) row.Percentage4H = ticker.Value.Percentage4H.Value;
+                if(ticker.Value.Average.HasValue) row.Average = ticker.Value.Average.Value;
+
+                onTickerData(row);
             }
         });
 
-        var request = new ParibuStreamRequest<ParibuSocketSubscribeRequest> { Event = "pusher:subscribe", Data = new ParibuSocketSubscribeRequest { Auth = "", Channel = "prb-public" } };
+        var request = new ParibuStreamRequest<ParibuSocketSubscribeRequest> { Event = "pusher:subscribe", Data = new ParibuSocketSubscribeRequest { Auth = "", Channel = "ticker" } };
         return await SubscribeAsync(request, null, false, internalHandler, ct).ConfigureAwait(false);
     }
 
-    public virtual async Task<CallResult<UpdateSubscription>> SubscribeToMarketDataAsync(string symbol, Action<ParibuStreamOrderBook> onOrderBookData, Action<ParibuStreamTrade> onTradeData, CancellationToken ct = default)
+    /*
+    public virtual async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToMarketDataAsync(string symbol, Action<ParibuStreamOrderBook> onOrderBookData, Action<ParibuStreamTrade> onTradeData, CancellationToken ct = default)
     {
-        var internalHandler = new Action<StreamDataEvent<ParibuStreamResponse>>(data =>
+        var internalHandler = new Action<WebSocketDataEvent<ParibuStreamResponse>>(data =>
         {
             var patch = JsonConvert.DeserializeObject<ParibuStreamPatch<object>>(data.Data.Data);
             if (patch.Index == "orderBook")

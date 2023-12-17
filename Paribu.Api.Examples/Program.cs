@@ -46,6 +46,27 @@ class Program
         var x13 = await api.CancelOrdersAsync(new List<string> { "----ORDER-ID-01-----", "----ORDER-ID-02-----", "----ORDER-ID-03-----" });
         var x14 = await api.CancelAllOrdersAsync();
 
+        // Web Socket Client
+        var ws = new ParibuSocketClient();
+
+        // Tickers
+        var sub01 = ws.SubscribeToTickersAsync((data) =>
+        {
+            if (data != null)
+            {
+                Console.WriteLine($"Ticker >> {data.Symbol} " +
+                    $"O:{data.First} " +
+                    $"H:{data.Highest} " +
+                    $"L:{data.Lowest} " +
+                    $"C:{data.Last} " +
+                    $"V:{data.Volume} " +
+                    $"CH:{data.Change} " +
+                    $"CP:{data.Percentage} " +
+                    $"Avg:{data.Average} "
+                    );
+            }
+        });
+
         Console.WriteLine("Done");
         Console.ReadLine();
     }

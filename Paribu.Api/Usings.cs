@@ -10,6 +10,7 @@ global using Microsoft.Extensions.Logging;
 global using Newtonsoft.Json;
 global using Newtonsoft.Json.Linq;
 global using Newtonsoft.Json.Serialization;
+global using Paribu.Api.Attributes;
 global using Paribu.Api.Authentication;
 global using Paribu.Api.Enums;
 global using Paribu.Api.Models;
