@@ -1,6 +1,4 @@
-﻿using Paribu.Api.Models.SocketApi;
-
-namespace Paribu.Api;
+﻿namespace Paribu.Api;
 
 public partial class ParibuSocketClient : WebSocketApiClient
 {

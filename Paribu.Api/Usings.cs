@@ -15,6 +15,7 @@ global using Paribu.Api.Authentication;
 global using Paribu.Api.Enums;
 global using Paribu.Api.Models;
 global using Paribu.Api.Models.RestApi;
+global using Paribu.Api.Models.SocketApi;
 global using System;
 global using System.Collections.Generic;
 global using System.Globalization;
