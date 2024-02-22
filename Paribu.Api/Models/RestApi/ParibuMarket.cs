@@ -26,17 +26,17 @@ public class ParibuMarketPairs
 public class ParibuMarketPrecisions
 {
     [JsonProperty("amount")]
-    public string AmountPrecision { get; set; }
+    public int AmountPrecision { get; set; }
 
     [JsonProperty("price")]
-    public string PricePrecision { get; set; }
+    public int PricePrecision { get; set; }
 }
 
 public class ParibuMarketSteps
 {
     [JsonProperty("amount")]
-    public string AmountStep { get; set; }
+    public decimal AmountStep { get; set; }
 
     [JsonProperty("price")]
-    public string PriceStep { get; set; }
+    public decimal PriceStep { get; set; }
 }
