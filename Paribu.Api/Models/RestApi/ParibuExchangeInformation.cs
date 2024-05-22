@@ -15,5 +15,5 @@ public class ParibuExchangeInformation
     public Dictionary<string, ParibuNetwork> Networks { get; set; }
 
     [JsonProperty("fee_matrix")]
-    public Dictionary<string, Dictionary<string, IEnumerable<Dictionary<string, decimal>>>> FeeMatrix { get; set; }
+    public Dictionary<string, Dictionary<string, List<Dictionary<string, decimal>>>> FeeMatrix { get; set; }
 }

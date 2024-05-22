@@ -15,8 +15,8 @@ public class ParibuAsset
     [JsonProperty("hide_if_void")]
     public bool HideIfVoid { get; set; }
 
-    public IEnumerable<string> Labels { get; set; }
-    public IEnumerable<string> Networks { get; set; }
+    public List<string> Labels { get; set; }
+    public List<string> Networks { get; set; }
 
     [JsonProperty("deposit_limits")]
     public ParibuAssetDepositLimits DepositLimits { get; set; }

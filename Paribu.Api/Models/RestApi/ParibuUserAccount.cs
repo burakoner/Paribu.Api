@@ -12,13 +12,13 @@ public class ParibuUserAccount
     public Dictionary<string, ParibuAssetBalance> Balances { get; set; }
 
     [JsonProperty("favorites")]
-    public IEnumerable<string> Favorites { get; set; }
+    public List<string> Favorites { get; set; }
 
     [JsonProperty("alarms")]
     public Dictionary<string, ParibuAlarm> Alarms { get; set; }
 
     [JsonProperty("open_orders")]
-    public Dictionary<string, ParibuOrder> OpenOrders { get; set; }
+    public List<ParibuOrder> OpenOrders { get; set; }
 
     //[JsonProperty("config")]
     //public config Configuration { get; set; }
@@ -31,6 +31,9 @@ public class ParibuUserInfo
     public string Mobile { get; set; }
     public string Name { get; set; }
 
+    [JsonProperty("created_at")]
+    public DateTime CreatedAt { get; set; }
+
     [JsonProperty("security")]
     public ParibuUserSecurity Security { get; set; }
 
@@ -38,7 +41,7 @@ public class ParibuUserInfo
     public ParibuUserSettings Settings { get; set; }
 
     [JsonProperty("todo_list")]
-    public IEnumerable<ParibuUserToDo> ToDoList { get; set; }
+    public List<ParibuUserToDo> ToDoList { get; set; }
 
     [JsonProperty("trade")]
     public ParibuUserTraderProfile TraderProfile { get; set; }
@@ -49,6 +52,9 @@ public class ParibuUserSecurity
     [JsonProperty("g2fa")]
     public bool Google2FA{ get; set; }
     
+    [JsonProperty("identity_missing_fields")]
+    public List< string> MissingIdentityFields { get; set; }
+
     [JsonProperty("is_account_verified")]
     public bool IsAccountVerified { get; set; }
     
@@ -58,9 +64,6 @@ public class ParibuUserSecurity
     [JsonProperty("is_identity_verified")]
     public bool IsIdentityVerified { get; set; }
     
-    [JsonProperty("identity_missing_fields")]
-    public IEnumerable< string> MissingIdentityFields { get; set; }
-
     [JsonProperty("nationality")]
     public string Nationality { get; set; }
 }

@@ -2,7 +2,7 @@
 
 public class ParibuMarket
 {
-    public IEnumerable<string> Labels { get; set; }
+    public List<string> Labels { get; set; }
 
     [JsonProperty("pairs")]
     public ParibuMarketPairs Pairs { get; set; }

@@ -9,10 +9,10 @@ public class ParibuNetwork
     public string NetworkType { get; set; }
 
     [JsonProperty("explorer"), JsonConverter(typeof(SafeCollectionConverter))]
-    public IEnumerable<ParibuNetworkExplorer> Explorers { get; set; }
+    public List<ParibuNetworkExplorer> Explorers { get; set; }
 
     [JsonProperty("validations"), JsonConverter(typeof(SafeCollectionConverter))]
-    public IEnumerable<ParibuNetworkValidations> Validations { get; set; }
+    public List<ParibuNetworkValidations> Validations { get; set; }
 }
 
 public class ParibuNetworkExplorer

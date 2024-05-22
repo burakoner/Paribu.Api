@@ -10,7 +10,7 @@ public class ParibuKline
     public long Timestamp { get; set; }
     public DateTime Time { get => Timestamp.ConvertFromSeconds(); }
 
-    internal static IEnumerable<ParibuKline> ImportChartHistory(ParibuChartHistory data)
+    internal static List<ParibuKline> ImportChartHistory(ParibuChartHistory data)
     {
         var list = new List<ParibuKline>();
         var min = data.Open.Count;

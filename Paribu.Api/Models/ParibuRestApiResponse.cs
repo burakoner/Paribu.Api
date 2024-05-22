@@ -7,8 +7,6 @@ internal class ParibuRestApiResponse<T>
 
     [JsonProperty("message")]
     public ParibuRestApiMessage Message { get; set; }
-    //[JsonProperty("message")]
-    //public string Message { get; set; }
 
     [JsonProperty("payload")]
     public T Payload { get; set; }

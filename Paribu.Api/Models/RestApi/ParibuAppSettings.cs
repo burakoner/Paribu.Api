@@ -3,19 +3,19 @@
 public class ParibuAppSettings
 {
     [JsonProperty("bank_accounts")]
-    public Dictionary<string, IEnumerable<ParibuBankAccount>> BankAccounts { get; set; }
+    public Dictionary<string, List<ParibuBankAccount>> BankAccounts { get; set; }
 
     [JsonProperty("commission_rates")]
-    public IEnumerable<ParibuCommissionRate> CommissionRates { get; set; }
+    public List<ParibuCommissionRate> CommissionRates { get; set; }
 
     [JsonProperty("currency_groups")]
-    public IEnumerable<ParibuCurrencyGroup> CurrencyGroups { get; set; }
+    public List<ParibuCurrencyGroup> CurrencyGroups { get; set; }
 
     [JsonProperty("locks")]
     public ParibuLockDurations LockDurations { get; set; }
 
     [JsonProperty("market_groups")]
-    public IEnumerable<ParibuMarketGroup> MarketGroups { get; set; }
+    public List<ParibuMarketGroup> MarketGroups { get; set; }
 
     [JsonProperty("throttles")]
     public ParibuThrottles Throttles { get; set; }

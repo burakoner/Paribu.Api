@@ -4,7 +4,7 @@ public class ParibuOrderBook
 {
     [JsonProperty("buy")]
     private Dictionary<decimal, decimal> Buys { get; set; }
-    public IEnumerable<ParibuOrderBookEntry> Bids 
+    public List<ParibuOrderBookEntry> Bids 
     { 
         get
         {
@@ -23,7 +23,7 @@ public class ParibuOrderBook
 
     [JsonProperty("sell")]
     private Dictionary<decimal, decimal> Sells { get; set; }
-    public IEnumerable<ParibuOrderBookEntry> Asks
+    public List<ParibuOrderBookEntry> Asks
     {
         get
         {

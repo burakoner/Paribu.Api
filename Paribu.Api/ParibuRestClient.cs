@@ -5,99 +5,99 @@ public class ParibuRestClient : RestApiClient
     #region Endpoints
 
     // Public Endpoints
-    private const string v4_Public_Health_Endpoint = "health";                                      // GET
-    private const string v4_Public_Config_Endpoint = "initials/config";                             // GET
-    private const string v4_Public_Ticker_Endpoint = "initials/ticker";                             // GET
-    private const string v4_Public_TickerExtended_Endpoint = "initials/ticker/extended";            // GET
-    private const string v4_Public_PriceSeries_Endpoint = "initials/price-series";                  // GET
-    private const string v4_Public_Orderbook_Endpoint = "market/{symbol}/orderbook";                // GET
-    private const string v4_Public_LatestMatches_Endpoint = "market/{symbol}/latest-matches";       // GET
+    private const string _v4PublicHealthEndpoint = "health";                                      // GET
+    private const string _v4PublicConfigEndpoint = "initials/config";                             // GET
+    private const string _v4PublicTickerEndpoint = "initials/ticker";                             // GET
+    private const string _v4PublicTickerExtendedEndpoint = "initials/ticker/extended";            // GET
+    private const string _v4PublicPriceSeriesEndpoint = "initials/price-series";                  // GET
+    private const string _v4PublicOrderbookEndpoint = "market/{symbol}/orderbook";                // GET
+    private const string _v4PublicLatestMatchesEndpoint = "market/{symbol}/latest-matches";       // GET
 
     // Public Contents
-    private const string v4_Public_ContentsCountries_Endpoint = "contents/countries";               // GET
-    private const string v4_Public_ContentsCities_Endpoint = "contents/cities";                     // GET
-    private const string v4_Public_ContentsCounties_Endpoint = "contents/counties/{cityId}";        // GET
-    private const string v4_Public_ContentsProfessions_Endpoint = "contents/professions";           // GET
-    private const string v4_Public_ContentsBanners_Endpoint = "contents/banners";                   // GET
-    private const string v4_Public_ContentsFeatures_Endpoint = "contents/features";                 // GET
+    private const string _v4PublicContentsCountriesEndpoint = "contents/countries";               // GET
+    private const string _v4PublicContentsCitiesEndpoint = "contents/cities";                     // GET
+    private const string _v4PublicContentsCountiesEndpoint = "contents/counties/{cityId}";        // GET
+    private const string _v4PublicContentsProfessionsEndpoint = "contents/professions";           // GET
+    private const string _v4PublicContentsBannersEndpoint = "contents/banners";                   // GET
+    private const string _v4PublicContentsFeaturesEndpoint = "contents/features";                 // GET
 
     // Public Contents
-    private const string v4_Chart_Config_Endpoint = "chart/config";                                 // GET
-    private const string v4_Chart_History_Endpoint = "chart/history";                               // GET
+    private const string _v4ChartConfigEndpoint = "chart/config";                                 // GET
+    private const string _v4ChartHistoryEndpoint = "chart/history";                               // GET
 
     // Auth Endpoints
-    private const string v4_Auth_Signup_Endpoint = "auth/sign-up";                                  // POST
-    private const string v4_Auth_SignupEmail_Endpoint = "auth/sign-up-email";                       // POST
-    private const string v4_Auth_VerifyEmail_Endpoint = "user/verify-email";                        // POST
-    private const string v4_Auth_Verification_Endpoint = "user/verification";
-    private const string v4_Auth_Forget_Endpoint = "auth/forget";
-    private const string v4_Auth_NewPassword_Endpoint = "auth/new-password";
-    private const string v4_Auth_ChangePassword_Endpoint = "auth/change-password";
-    private const string v4_Auth_Signin_Endpoint = "auth/sign-in";                                  // POST
-    private const string v4_Auth_Signout_Endpoint = "auth/sign-out";
+    private const string _v4AuthSignupEndpoint = "auth/sign-up";                                  // POST
+    private const string _v4AuthSignupEmailEndpoint = "auth/sign-up-email";                       // POST
+    private const string _v4AuthVerifyEmailEndpoint = "user/verify-email";                        // POST
+    private const string _v4AuthVerificationEndpoint = "user/verification";
+    private const string _v4AuthForgetEndpoint = "auth/forget";
+    private const string _v4AuthNewPasswordEndpoint = "auth/new-password";
+    private const string _v4AuthChangePasswordEndpoint = "auth/change-password";
+    private const string _v4AuthSigninEndpoint = "auth/sign-in";                                  // POST
+    private const string _v4AuthSignoutEndpoint = "auth/sign-out";
 
     // MFA Endpoints
-    private const string v4_MFA_Resend_Endpoint = "mfa/resend";                                     // POST
-    private const string v4_MFA_Verify_Endpoint = "mfa/verify";                                     // POST
+    private const string _v4MFAResendEndpoint = "mfa/resend";                                     // POST
+    private const string _v4MFAVerifyEndpoint = "mfa/verify";                                     // POST
 
     // Private Endpoints
-    private const string v4_Private_User_Endpoint = "user";                                         // GET
-    private const string v4_Private_Transactions_Endpoint = "user/wallet/{asset}/transactions";     // GET
-    private const string v4_Private_Unregister_Endpoint = "user/unregister";
-    private const string v4_Private_G2faEnable_Endpoint = "user/g2fa-enable";
-    private const string v4_Private_G2faDisable_Endpoint = "user/g2fa-disable";
-    private const string v4_Private_ChangeEmail_Endpoint = "user/change-email";
-    private const string v4_Private_Deactivate_Endpoint = "user/deactivate";
-    private const string v4_Private_PusherAuthentication_Endpoint = "user/pusher/auth";             // POST  Request: socket_id=xxxxxx.xxxxxxx&channel_name=private-market-usdt_tl-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx     Response: {"auth":"xxxxxxxxxxxxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
+    private const string _v4PrivateUserEndpoint = "user";                                         // GET
+    private const string _v4PrivateTransactionsEndpoint = "user/wallet/{asset}/transactions";     // GET
+    private const string _v4PrivateUnregisterEndpoint = "user/unregister";
+    private const string _v4PrivateG2faEnableEndpoint = "user/g2fa-enable";
+    private const string _v4PrivateG2faDisableEndpoint = "user/g2fa-disable";
+    private const string _v4PrivateChangeEmailEndpoint = "user/change-email";
+    private const string _v4PrivateDeactivateEndpoint = "user/deactivate";
+    private const string _v4PrivatePusherAuthenticationEndpoint = "user/pusher/auth";             // POST  Request: socket_id=xxxxxx.xxxxxxx&channel_name=private-market-usdt_tl-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx     Response: {"auth":"xxxxxxxxxxxxxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"}
 
     // Order Endpoints (Private)
-    private const string v4_Orders_Endpoint = "orders";                                             // POST
-    private const string v4_OrderGet_Endpoint = "orders/{id}";                                      // GET
-    private const string v4_OrdersCancel_Endpoint = "orders/cancel";                                // POST
-    private const string v4_OrdersCancelAll_Endpoint = "orders/cancel/all";                         // POST
-    private const string v4_UserMarketOrders_Endpoint = "user/market/{symbol}/orders";              // GET
-    private const string v4_OrdersHistory_Endpoint = "history";                                     // GET
+    private const string _v4OrdersEndpoint = "orders";                                             // POST
+    private const string _v4OrderGetEndpoint = "orders/{id}";                                      // GET
+    private const string _v4OrdersCancelEndpoint = "orders/cancel";                                // POST
+    private const string _v4OrdersCancelAllEndpoint = "orders/cancel/all";                         // POST
+    private const string _v4UserMarketOrdersEndpoint = "user/market/{symbol}/orders";              // GET
+    private const string _v4OrdersHistoryEndpoint = "history";                                     // GET
 
     // Alarm Endpoints (Private)
-    private const string v4_Alarm_Set_Endpoint = "alarm";                                           // POST
+    private const string _v4AlarmSetEndpoint = "alarm";                                           // POST
     // Request : {"market":"usdt_tl","trigger_price":"21.000"}
     // Response: {"message":{"display":{"component":"snackbar","content":"status"},"title":{"langkey":"system_messages.alarm_set","params":{"market":"USDT-TL"}},"severity":"success","buttons":[{"severity":"dark","action":{"name":"close","target":"_self"},"label":{"langkey":"system_messages.close"}}]},"payload":{"uid":"e1dwjk9p-x85r-756w-dz21-lg26yovz34n0","user_uid":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx","market":"usdt_tl","direction":"up","trigger_price":21,"creation_price":20.77,"created_at":"2023-05-01T11:13:35.000000Z"},"meta":null}
     // Request : {"market":"usdt_tl","trigger_price":"20.000"}
     // Response: {"message":{"display":{"component":"snackbar","content":"status"},"title":{"langkey":"system_messages.alarm_set","params":{"market":"USDT-TL"}},"severity":"success","buttons":[{"severity":"dark","action":{"name":"close","target":"_self"},"label":{"langkey":"system_messages.close"}}]},"payload":{"uid":"znp8v5k6-xw2m-qmdk-nv14-q3ojyge490d1","user_uid":"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx","market":"usdt_tl","direction":"down","trigger_price":20,"creation_price":20.769,"created_at":"2023-05-01T11:14:30.000000Z"},"meta":null}
 
-    private const string v4_Alarm_Delete_Endpoint = "alarm/{id}";                                   // DELETE
+    private const string _v4AlarmDeleteEndpoint = "alarm/{id}";                                   // DELETE
     // https://web.paribu.com/alarm/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     // {"message":{"display":{"component":"snackbar","content":"status"},"title":{"langkey":"system_messages.alarm_canceled","params":{"market":"USDT-TL"}},"severity":"success"},"payload":{"deleted":true},"meta":null}
 
-    private const string v4_Alarm_DeleteAll_Endpoint = "alarm/all";                                 // DELETE
+    private const string _v4AlarmDeleteAllEndpoint = "alarm/all";                                 // DELETE
 
     // Address Endpoints (Private)
-    private const string v4_Address_Endpoint = "addresses";
-    private const string v4_AddressAssign_Endpoint = "addresses/assign";
-    private const string v4_AddressValidate_Endpoint = "validate/address";
-    private const string v4_Address_Delete_Endpoint = "addresses/{id}";                             // DELETE
-    private const string v4_Address_DeleteAll_Endpoint = "alarm/all";                               // DELETE
+    private const string _v4AddressEndpoint = "addresses";
+    private const string _v4AddressAssignEndpoint = "addresses/assign";
+    private const string _v4AddressValidateEndpoint = "validate/address";
+    private const string _v4AddressDeleteEndpoint = "addresses/{id}";                             // DELETE
+    private const string _v4AddressDeleteAllEndpoint = "alarm/all";                               // DELETE
 
     // Notification Endpoints (Private)
-    private const string v4_Notification_Endpoint = "notification";
-    private const string v4_NotificationSettings_Endpoint = "notification/settings";
-    private const string v4_NotificationPushToken_Endpoint = "notification/push-token";
-    private const string v4_NotificationRead_Endpoint = "notification/read/{id}";
-    private const string v4_NotificationReadAll_Endpoint = "notification/read/all";
+    private const string _v4NotificationEndpoint = "notification";
+    private const string _v4NotificationSettingsEndpoint = "notification/settings";
+    private const string _v4NotificationPushTokenEndpoint = "notification/push-token";
+    private const string _v4NotificationReadEndpoint = "notification/read/{id}";
+    private const string _v4NotificationReadAllEndpoint = "notification/read/all";
 
     // Address Endpoints (Private)
-    private const string v4_AnnouncementSettings_Endpoint = "announcement/settings";
+    private const string _v4AnnouncementSettingsEndpoint = "announcement/settings";
 
     // Withdrawal Endpoints (Private)
-    private const string v4_Withdraws_Endpoint = "withdraws";
-    private const string v4_WithdrawsCancel_Endpoint = "withdraws/{id}";                            // DELETE
+    private const string _v4WithdrawsEndpoint = "withdraws";
+    private const string _v4WithdrawsCancelEndpoint = "withdraws/{id}";                            // DELETE
 
     // Favorite Endpoints (Private)
-    private const string v4_Favorite_Endpoint = "favorite";                                         // POST (Add/Remove)    Request: {"market":"usdt_tl"}    Response: {"message":{"display":{"component":"snackbar","content":"status"},"title":{"langkey":"system_messages.favorite_added","params":{"market":"USDT-TL"}},"severity":"success"},"payload":null,"meta":null}
+    private const string _v4FavoriteEndpoint = "favorite";                                         // POST (Add/Remove)    Request: {"market":"usdt_tl"}    Response: {"message":{"display":{"component":"snackbar","content":"status"},"title":{"langkey":"system_messages.favorite_added","params":{"market":"USDT-TL"}},"severity":"success"},"payload":null,"meta":null}
 
     // Donations Endpoints
-    private const string v4_Donations_Initials_Endpoint = "donations/initial";
-    private const string v4_Donations_Donate_Endpoint = "donations/donate";
+    private const string _v4DonationsInitialsEndpoint = "donations/initial";
+    private const string _v4DonationsDonateEndpoint = "donations/donate";
     #endregion
 
     public string DeviceId { get; set; }
@@ -161,6 +161,7 @@ public class ParibuRestClient : RestApiClient
         /*
         Valid Devices
         - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62
+        - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0
         - test
         - Android
         - Windows
@@ -171,15 +172,15 @@ public class ParibuRestClient : RestApiClient
         */
         return new Dictionary<string, string>
         {
-            { "user-agent", "ParibuApp/403 (Android 12)" },
+            { "user-agent", "ParibuApp/440 (Android 13)" },
             { "platform", "Android" },
             { "device", "Android" },
-            { "version", "4.0.3" },
+            { "version", "4.4.0" },
             { "pragma-cache-local", this.DeviceId }
         };
     }
 
-    internal Uri GetUri(string endpoint) => new Uri($"{ClientOptions.BaseAddress.TrimEnd('/')}/{endpoint}");
+    internal Uri GetUri(string endpoint) => new($"{ClientOptions.BaseAddress.TrimEnd('/')}/{endpoint}");
 
     internal async Task<RestCallResult<string>> ExecuteAsync(Uri uri, HttpMethod method, CancellationToken cancellationToken, bool signed = false, Dictionary<string, object> queryParameters = null, Dictionary<string, object> bodyParameters = null, Dictionary<string, string> headerParameters = null, ArraySerialization? serialization = null, JsonSerializer deserializer = null, bool ignoreRatelimit = false, int requestWeight = 1)
     {
@@ -270,28 +271,28 @@ public class ParibuRestClient : RestApiClient
     #region Api Methods
     public async Task<RestCallResult<bool>> GetHealthAsync(CancellationToken ct = default)
     {
-        var result = await ExecuteAsync<IEnumerable<object>>(GetUri(v4_Public_Health_Endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        var result = await ExecuteAsync<List<object>>(GetUri(_v4PublicHealthEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
         if (!result.Success) return result.AsError<bool>(result.Error);
 
         return result.As(true);
     }
 
     public async Task<RestCallResult<ParibuExchangeInformation>> GetExchangeInformationAsync(CancellationToken ct = default)
-        => await SendParibuRequestAsync<ParibuExchangeInformation>(GetUri(v4_Public_Config_Endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        => await SendParibuRequestAsync<ParibuExchangeInformation>(GetUri(_v4PublicConfigEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
 
     public async Task<RestCallResult<Dictionary<string, ParibuTicker>>> GetTickersAsync(CancellationToken ct = default)
-        => await SendParibuRequestAsync<Dictionary<string, ParibuTicker>>(GetUri(v4_Public_Ticker_Endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        => await SendParibuRequestAsync<Dictionary<string, ParibuTicker>>(GetUri(_v4PublicTickerEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<Dictionary<string, IEnumerable<decimal>>>> GetPriceSeriesAsync(CancellationToken ct = default)
-        => await SendParibuRequestAsync<Dictionary<string, IEnumerable<decimal>>>(GetUri(v4_Public_PriceSeries_Endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+    public async Task<RestCallResult<Dictionary<string, List<decimal>>>> GetPriceSeriesAsync(CancellationToken ct = default)
+        => await SendParibuRequestAsync<Dictionary<string, List<decimal>>>(GetUri(_v4PublicPriceSeriesEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
 
     public async Task<RestCallResult<ParibuOrderBook>> GetOrderBookAsync(string symbol, CancellationToken ct = default)
-        => await SendParibuRequestAsync<ParibuOrderBook>(GetUri(v4_Public_Orderbook_Endpoint.Replace("{symbol}", symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
+        => await SendParibuRequestAsync<ParibuOrderBook>(GetUri(_v4PublicOrderbookEndpoint.Replace("{symbol}", symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
 
     public async Task<RestCallResult<Dictionary<string, ParibuMatch>>> GetLatestMatchesAsync(string symbol, CancellationToken ct = default)
-        => await SendParibuRequestAsync<Dictionary<string, ParibuMatch>>(GetUri(v4_Public_LatestMatches_Endpoint.Replace("{symbol}", symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
+        => await SendParibuRequestAsync<Dictionary<string, ParibuMatch>>(GetUri(_v4PublicLatestMatchesEndpoint.Replace("{symbol}", symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<ParibuKline>>> GetKlinesAsync(string symbol, ParibuKlineInterval interval, DateTime start, DateTime end, int limit, CancellationToken ct = default)
+    public async Task<RestCallResult<List<ParibuKline>>> GetKlinesAsync(string symbol, ParibuKlineInterval interval, DateTime start, DateTime end, int limit, CancellationToken ct = default)
         => await GetKlinesAsync(symbol, interval, start.ConvertToMilliseconds(), end.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
 
     /// <summary>
@@ -304,7 +305,7 @@ public class ParibuRestClient : RestApiClient
     /// <param name="limit"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<IEnumerable<ParibuKline>>> GetKlinesAsync(string symbol, ParibuKlineInterval interval, long start, long end, int limit, CancellationToken ct = default)
+    public async Task<RestCallResult<List<ParibuKline>>> GetKlinesAsync(string symbol, ParibuKlineInterval interval, long start, long end, int limit, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -315,8 +316,8 @@ public class ParibuRestClient : RestApiClient
             { "to", end },
         };
 
-        var result = await ExecuteAsync<ParibuChartHistory>(GetUri(v4_Chart_History_Endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
-        if (!result) return result.AsError<IEnumerable<ParibuKline>>(result.Error);
+        var result = await ExecuteAsync<ParibuChartHistory>(GetUri(_v4ChartHistoryEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        if (!result) return result.AsError<List<ParibuKline>>(result.Error);
         return result.As(ParibuKline.ImportChartHistory(result.Data));
     }
 
@@ -336,7 +337,7 @@ public class ParibuRestClient : RestApiClient
             { "password", password},
         };
 
-        return await SendParibuRequestAsync<ParibuMfaStatus>(GetUri(v4_Auth_Signin_Endpoint), HttpMethod.Post, ct, false, bodyParameters: parameters).ConfigureAwait(false);
+        return await SendParibuRequestAsync<ParibuMfaStatus>(GetUri(_v4AuthSigninEndpoint), HttpMethod.Post, ct, false, bodyParameters: parameters).ConfigureAwait(false);
     }
 
     public async Task<RestCallResult<ParibuAuthToken>> LoginVerifyAsync(string token, string code, CancellationToken ct = default)
@@ -347,11 +348,11 @@ public class ParibuRestClient : RestApiClient
             { "code", code},
         };
 
-        return await SendParibuRequestAsync<ParibuAuthToken>(GetUri(v4_MFA_Verify_Endpoint), HttpMethod.Post, ct, false, bodyParameters: parameters).ConfigureAwait(false);
+        return await SendParibuRequestAsync<ParibuAuthToken>(GetUri(_v4MFAVerifyEndpoint), HttpMethod.Post, ct, false, bodyParameters: parameters).ConfigureAwait(false);
     }
 
     public async Task<RestCallResult<ParibuUserAccount>> GetUserAccountAsync(CancellationToken ct = default)
-        => await SendParibuRequestAsync<ParibuUserAccount>(GetUri(v4_Private_User_Endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        => await SendParibuRequestAsync<ParibuUserAccount>(GetUri(_v4PrivateUserEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
 
     public async Task<RestCallResult<ParibuOrder>> PlaceOrderAsync(string symbol, ParibuOrderSide side, ParibuOrderType type, decimal? price = null, decimal? condition = null, decimal? amount = null, decimal? total = null, CancellationToken ct = default)
     {
@@ -366,30 +367,30 @@ public class ParibuRestClient : RestApiClient
         parameters.AddOptionalParameter("amount", amount);
         parameters.AddOptionalParameter("total", total);
 
-        return await SendParibuRequestAsync<ParibuOrder>(GetUri(v4_Orders_Endpoint), method: HttpMethod.Post, ct, signed: true, bodyParameters: parameters).ConfigureAwait(false);
+        return await SendParibuRequestAsync<ParibuOrder>(GetUri(_v4OrdersEndpoint), method: HttpMethod.Post, ct, signed: true, bodyParameters: parameters).ConfigureAwait(false);
     }
 
     public async Task<RestCallResult<ParibuOrder>> GetOrderAsync(string orderId, CancellationToken ct = default)
-        => await SendParibuRequestAsync<ParibuOrder>(GetUri(v4_OrderGet_Endpoint.Replace("{id}", orderId)), method: HttpMethod.Get, ct, signed: true).ConfigureAwait(false);
+        => await SendParibuRequestAsync<ParibuOrder>(GetUri(_v4OrderGetEndpoint.Replace("{id}", orderId)), method: HttpMethod.Get, ct, signed: true).ConfigureAwait(false);
 
     public async Task<RestCallResult<ParibuCancelResponse>> CancelOrderAsync(string orderId, CancellationToken ct = default)
-        => await CancelOrdersAsync(new List<string> { orderId }, ct).ConfigureAwait(false);
+        => await CancelOrdersAsync([orderId], ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<ParibuCancelResponse>> CancelOrdersAsync(IEnumerable<string> orderIds, CancellationToken ct = default)
+    public async Task<RestCallResult<ParibuCancelResponse>> CancelOrdersAsync(List<string> orderIds, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
             { "ids", orderIds},
         };
 
-        return await SendParibuRequestAsync<ParibuCancelResponse>(GetUri(v4_OrdersCancel_Endpoint), HttpMethod.Post, ct, signed: true, bodyParameters: parameters).ConfigureAwait(false);
+        return await SendParibuRequestAsync<ParibuCancelResponse>(GetUri(_v4OrdersCancelEndpoint), HttpMethod.Post, ct, signed: true, bodyParameters: parameters).ConfigureAwait(false);
     }
 
     public async Task<RestCallResult<ParibuCancelResponse>> CancelAllOrdersAsync(CancellationToken ct = default)
-        => await SendParibuRequestAsync<ParibuCancelResponse>(GetUri(v4_OrdersCancelAll_Endpoint), HttpMethod.Post, ct, signed: true).ConfigureAwait(false);
+        => await SendParibuRequestAsync<ParibuCancelResponse>(GetUri(_v4OrdersCancelAllEndpoint), HttpMethod.Post, ct, signed: true).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<ParibuOrder>>> GetOrdersAsync(string symbol, CancellationToken ct = default)
-        => await SendParibuRequestAsync<IEnumerable<ParibuOrder>>(GetUri(v4_UserMarketOrders_Endpoint.Replace("{symbol}", symbol)), method: HttpMethod.Get, ct, signed: true).ConfigureAwait(false);
+    public async Task<RestCallResult<List<ParibuOrder>>> GetOrdersAsync(string symbol, CancellationToken ct = default)
+        => await SendParibuRequestAsync<List<ParibuOrder>>(GetUri(_v4UserMarketOrdersEndpoint.Replace("{symbol}", symbol)), method: HttpMethod.Get, ct, signed: true).ConfigureAwait(false);
 
     /// <summary>
     /// Query Order History
@@ -402,7 +403,7 @@ public class ParibuRestClient : RestApiClient
     /// <param name="endDate"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<IEnumerable<ParibuOrder>>> GetOrdersHistoryAsync(List<string> processes, List<string> assets = null, DateTime? startDate = null, DateTime? endDate = null, int page = 1, int rows = 25, CancellationToken ct = default)
+    public async Task<RestCallResult<List<ParibuOrder>>> GetOrdersHistoryAsync(List<string> processes, List<string> assets = null, DateTime? startDate = null, DateTime? endDate = null, int page = 1, int rows = 25, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -414,7 +415,7 @@ public class ParibuRestClient : RestApiClient
         parameters.AddOptionalParameter("started_at", startDate);
         parameters.AddOptionalParameter("ended_at", endDate);
 
-        return await SendParibuRequestAsync<IEnumerable<ParibuOrder>>(GetUri(v4_OrdersHistory_Endpoint), HttpMethod.Get, ct, signed: true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendParibuRequestAsync<List<ParibuOrder>>(GetUri(_v4OrdersHistoryEndpoint), HttpMethod.Get, ct, signed: true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     #endregion

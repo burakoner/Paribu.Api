@@ -54,19 +54,16 @@ class Program
         // Tickers
         var sub01 = ws.SubscribeToTickersAsync((data) =>
         {
-            if (data != null)
-            {
-                Console.WriteLine($"Ticker >> {data.Symbol} " +
-                    $"O:{data.First} " +
-                    $"H:{data.Highest} " +
-                    $"L:{data.Lowest} " +
-                    $"C:{data.Last} " +
-                    $"V:{data.Volume} " +
-                    $"CH:{data.Change} " +
-                    $"CP:{data.Percentage} " +
-                    $"Avg:{data.Average} "
-                    );
-            }
+            Console.WriteLine($"Ticker >> {data.Symbol} " +
+                $"O:{data.First} " +
+                $"H:{data.Highest} " +
+                $"L:{data.Lowest} " +
+                $"C:{data.Last} " +
+                $"V:{data.Volume} " +
+                $"CH:{data.Change} " +
+                $"CP:{data.Percentage} " +
+                $"Avg:{data.Average} "
+                );
         });
 
         Console.WriteLine("Done");

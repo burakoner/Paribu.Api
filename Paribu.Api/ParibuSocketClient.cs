@@ -175,7 +175,7 @@ public partial class ParibuSocketClient : WebSocketApiClient
             }
             else if (patch.Index == "marketMatches")
             {
-                var json = JsonConvert.DeserializeObject<ParibuStreamPatch<ParibuStreamMerge<IEnumerable<ParibuStreamTrade>>>>(data.Data.Data);
+                var json = JsonConvert.DeserializeObject<ParibuStreamPatch<ParibuStreamMerge<List<ParibuStreamTrade>>>>(data.Data.Data);
                 foreach (var trade in json.Patch.Merge)
                 {
                     trade.Symbol = symbol;

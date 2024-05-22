@@ -18,8 +18,8 @@ public static class ParibuExtensions
     #region ToStr
     public static string ToStr(this object @this, bool nullToEmpty = true)
     {
-        bool isNull = @this == null ? true : false;
-        bool isDBNull = @this != null && @this.GetType() == typeof(DBNull) ? true : false;
+        bool isNull = @this == null;
+        bool isDBNull = @this != null && @this.GetType() == typeof(DBNull);
 
         if (isNull)
             return nullToEmpty ? string.Empty : null;

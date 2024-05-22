@@ -12,7 +12,7 @@ public class SocketPatch<T>
 public class SocketMerge<T>
 {
     [JsonProperty("unset")]
-    public IEnumerable<string> Unset { get; set; }
+    public List<string> Unset { get; set; }
 
     [JsonProperty("merge")]
     public T Merge { get; set; }
