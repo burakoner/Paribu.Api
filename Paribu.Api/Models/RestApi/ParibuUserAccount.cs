@@ -14,8 +14,9 @@ public class ParibuUserAccount
     [JsonProperty("favorites")]
     public List<string> Favorites { get; set; }
 
-    [JsonProperty("alarms")]
-    public Dictionary<string, ParibuAlarm> Alarms { get; set; }
+    //[JsonProperty("alarms")]
+    //public Dictionary<string, ParibuAlarm> Alarms { get; set; }
+    // Alarm yoksa empty array [], alarm varsa dictionary dönüyor. Bu da hataya sebep oluyor şimdilik kapadım
 
     [JsonProperty("open_orders")]
     public List<ParibuOrder> OpenOrders { get; set; }
