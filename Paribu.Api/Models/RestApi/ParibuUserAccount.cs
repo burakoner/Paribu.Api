@@ -14,11 +14,10 @@ public class ParibuUserAccount
     [JsonProperty("favorites")]
     public List<string> Favorites { get; set; }
 
-    //[JsonProperty("alarms")]
-    //public Dictionary<string, ParibuAlarm> Alarms { get; set; }
-    // Alarm yoksa empty array [], alarm varsa dictionary dönüyor. Bu da hataya sebep oluyor şimdilik kapadım
+    [JsonProperty("alarms"), JsonConverter(typeof(ParibuStackConverter<ParibuAlarm>))]
+    public List<ParibuAlarm> Alarms { get; set; }
 
-    [JsonProperty("open_orders")]
+    [JsonProperty("open_orders"), JsonConverter(typeof(ParibuStackConverter<ParibuOrder>))]
     public List<ParibuOrder> OpenOrders { get; set; }
 
     //[JsonProperty("config")]
@@ -51,20 +50,20 @@ public class ParibuUserInfo
 public class ParibuUserSecurity
 {
     [JsonProperty("g2fa")]
-    public bool Google2FA{ get; set; }
-    
+    public bool Google2FA { get; set; }
+
     [JsonProperty("identity_missing_fields")]
-    public List< string> MissingIdentityFields { get; set; }
+    public List<string> MissingIdentityFields { get; set; }
 
     [JsonProperty("is_account_verified")]
     public bool IsAccountVerified { get; set; }
-    
+
     [JsonProperty("is_email_verified")]
     public bool IsEmailVerified { get; set; }
-    
+
     [JsonProperty("is_identity_verified")]
     public bool IsIdentityVerified { get; set; }
-    
+
     [JsonProperty("nationality")]
     public string Nationality { get; set; }
 }
@@ -134,16 +133,16 @@ public class ParibuAssetBalanceDetails
 
     [JsonProperty("match_buy_in")]
     public decimal MatchBuyIn { get; set; }
-    
+
     [JsonProperty("match_sell_out")]
     public decimal MatchSellOut { get; set; }
-    
+
     [JsonProperty("transfer_deposit")]
     public decimal TransferDeposit { get; set; }
-    
+
     [JsonProperty("transfer_withdraw")]
     public decimal TransferWithdraw { get; set; }
-    
+
     [JsonProperty("transfer_withdraw_fee")]
     public decimal TransferWithdrawFee { get; set; }
 }

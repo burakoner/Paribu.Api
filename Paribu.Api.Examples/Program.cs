@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Paribu.Api.Enums;
+using Paribu.Api.Models.RestApi;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Paribu.Api.Examples;
