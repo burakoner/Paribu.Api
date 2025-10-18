@@ -2,15 +2,15 @@
 
 public enum ParibuKlineInterval
 {
-    [Label("15")]
-    FifteenMinutes,
+    [Map("15")]
+    FifteenMinutes = 900,
 
-    [Label("60")]
-    OneHour,
+    [Map("60")]
+    OneHour = 3600,
 
-    [Label("240")]
-    FourHours,
+    [Map("240")]
+    FourHours = 14400,
 
-    [Label("1D")]
-    OneDay,
+    [Map("1D")]
+    OneDay = 86400,
 }

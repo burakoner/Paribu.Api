@@ -1,14 +1,17 @@
 ﻿namespace Paribu.Api.Models.RestApi;
 
-public record ParibuTicker
+public record ParibuAppTicker
 {
-    [JsonProperty("market")]
+    [JsonProperty("id")]
     public string Symbol { get; set; } = "";
 
-    [JsonProperty("low")]
+    [JsonProperty("interval")]
+    public string Interval { get; set; } = "";
+
+    [JsonProperty("lowest")]
     public decimal Low { get; set; }
 
-    [JsonProperty("high")]
+    [JsonProperty("highest")]
     public decimal High { get; set; }
 
     [JsonProperty("first")]
@@ -28,6 +31,12 @@ public record ParibuTicker
 
     [JsonProperty("percentage")]
     public decimal Percentage { get; set; }
+
+    [JsonProperty("percentage1h")]
+    public decimal Percentage1H { get; set; }
+
+    [JsonProperty("percentage4h")]
+    public decimal Percentage4H { get; set; }
 
     [JsonProperty("average")]
     public decimal Average { get; set; }

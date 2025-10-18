@@ -2,10 +2,17 @@
 
 public class ParibuRestClientOptions : RestApiClientOptions
 {
-    public static ParibuRestClientOptions Default { get; set; } = new();
-
-    public ParibuRestClientOptions() : base()
+    public ParibuRestClientOptions() : this("", "")
     {
-        this.BaseAddress = ParibuApiAddresses.App.ApiAddress;
+    }
+
+    public ParibuRestClientOptions(string apikey, string secret) : this(new ApiCredentials(apikey, secret))
+    {
+    }
+
+    public ParibuRestClientOptions(ApiCredentials credentials)
+    {
+        ApiCredentials = credentials;
+        FailOnEmptyResponse = false;
     }
 }

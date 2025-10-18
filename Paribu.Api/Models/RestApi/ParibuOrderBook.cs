@@ -1,49 +1,23 @@
 ﻿namespace Paribu.Api.Models.RestApi;
 
-public class ParibuOrderBook
+public record ParibuOrderBook
 {
-    [JsonProperty("buy")]
-    private Dictionary<decimal, decimal> Buys { get; set; }
-    public List<ParibuOrderBookEntry> Bids 
-    { 
-        get
-        {
-            var bids = new List<ParibuOrderBookEntry>();
-            foreach (var item in Buys)
-            {
-                bids.Add(new ParibuOrderBookEntry
-                {
-                    Price = item.Key,
-                    Amount = item.Value,
-                });
-            }
-            return bids;
-        }
-    }
+    [JsonProperty("timestamp")]
+    public DateTime Timestamp { get; set; }
 
-    [JsonProperty("sell")]
-    private Dictionary<decimal, decimal> Sells { get; set; }
-    public List<ParibuOrderBookEntry> Asks
-    {
-        get
-        {
-            var bids = new List<ParibuOrderBookEntry>();
-            foreach (var item in Sells)
-            {
-                bids.Add(new ParibuOrderBookEntry
-                {
-                    Price = item.Key,
-                    Amount = item.Value,
-                });
-            }
-            return bids;
-        }
-    }
+    [JsonProperty("asks")]
+    public List<ParibuOrderBookEntry> Asks { get; set; } = [];
+
+    [JsonProperty("bids")]
+    public List<ParibuOrderBookEntry> Bids { get; set; } = [];
 }
 
-public class ParibuOrderBookEntry
+[JsonConverter(typeof(ArrayConverter))]
+public record ParibuOrderBookEntry
 {
-    public decimal Amount { get; set; }
-
+    [ArrayProperty(0)]
     public decimal Price { get; set; }
+
+    [ArrayProperty(1)]
+    public decimal Amount { get; set; }
 }

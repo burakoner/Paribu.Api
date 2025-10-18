@@ -2,9 +2,9 @@
 
 public enum ParibuOrderSide
 {
-    [Label("buy")]
+    [Map("buy", "BUY")]
     Buy,
 
-    [Label("sell")]
+    [Map("sell", "SELL")]
     Sell,
 }

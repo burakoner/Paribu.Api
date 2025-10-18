@@ -1,6 +1,6 @@
 ﻿namespace Paribu.Api.Models.RestApi;
 
-public class ParibuKline
+public record ParibuKline
 {
     public decimal Open { get; set; }
     public decimal High { get; set; }
@@ -12,13 +12,14 @@ public class ParibuKline
 
     internal static List<ParibuKline> ImportChartHistory(ParibuChartHistory data)
     {
-        var list = new List<ParibuKline>();
         var min = data.Open.Count;
         min = Math.Min(min, data.High.Count);
         min = Math.Min(min, data.Low.Count);
         min = Math.Min(min, data.Close.Count);
         min = Math.Min(min, data.Volume.Count);
         min = Math.Min(min, data.Timestamp.Count);
+
+        var list = new List<ParibuKline>();
         for (var i = 0; i < min; i++)
         {
             list.Add(new ParibuKline
@@ -36,32 +37,29 @@ public class ParibuKline
     }
 }
 
-internal class ParibuChartHistory
+internal record ParibuChartHistory
 {
-    [JsonProperty("ttl")]
-    public int TTL { get; set; }
+    [JsonProperty("o")]
+    public List<decimal> Open { get; set; } = [];
+
+    [JsonProperty("h")]
+    public List<decimal> High { get; set; } = [];
+
+    [JsonProperty("l")]
+    public List<decimal> Low { get; set; } = [];
+
+    [JsonProperty("c")]
+    public List<decimal> Close { get; set; } = [];
+
+    [JsonProperty("v")]
+    public List<decimal> Volume { get; set; } = [];
+
+    [JsonProperty("t")]
+    public List<long> Timestamp { get; set; } = [];
 
     [JsonProperty("s")]
-    public string Status { get; set; }
+    public string Status { get; set; } = "";
     
     [JsonProperty("nextTime")]
     public long? NextTime { get; set; }
-
-    [JsonProperty("o")]
-    public List<decimal> Open { get; set; }
-
-    [JsonProperty("h")]
-    public List<decimal> High { get; set; }
-
-    [JsonProperty("l")]
-    public List<decimal> Low { get; set; }
-
-    [JsonProperty("c")]
-    public List<decimal> Close { get; set; }
-
-    [JsonProperty("v")]
-    public List<decimal> Volume { get; set; }
-
-    [JsonProperty("t")]
-    public List<long> Timestamp { get; set; }
 }

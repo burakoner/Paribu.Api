@@ -1,6 +1,6 @@
 ﻿namespace Paribu.Api.Models.RestApi;
 
-public class ParibuMatch
+public record ParibuAppTrade
 {
     [JsonProperty("price")]
     public decimal Price { get; set; }
@@ -11,6 +11,6 @@ public class ParibuMatch
     [JsonProperty("timestamp")]
     public DateTime Timestamp { get; set; }
 
-    [JsonProperty("trade"), JsonConverter(typeof(LabelConverter<ParibuOrderSide>))]
-    public ParibuOrderSide Side { get; set; }
+    [JsonProperty("trade")]
+    public ParibuOrderSide TakerSide { get; set; }
 }

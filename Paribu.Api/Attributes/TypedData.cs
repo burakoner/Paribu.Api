@@ -2,7 +2,7 @@
 
 public static class JsonExtensions
 {
-    public static TJToken RemoveFromLowestPossibleParent<TJToken>(this TJToken node) where TJToken : JToken
+    public static TJToken? RemoveFromLowestPossibleParent<TJToken>(this TJToken node) where TJToken : JToken
     {
         if (node == null)
             return null;
@@ -42,7 +42,7 @@ public class TypedDataConverter<TObject> : JsonConverter
         }
     }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
     {
         if (reader.TokenType == JsonToken.Null)
             return null;
@@ -71,7 +71,7 @@ public class TypedDataConverter<TObject> : JsonConverter
         return value;
     }
 
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
         var contract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(value.GetType());
         var extensionJsonProperty = GetExtensionJsonProperty(contract);

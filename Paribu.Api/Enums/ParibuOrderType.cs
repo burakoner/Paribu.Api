@@ -2,9 +2,9 @@
 
 public enum ParibuOrderType
 {
-    [Label("limit")]
+    [Map("limit")]
     Limit,
 
-    [Label("market")]
+    [Map("market")]
     Market,
 }

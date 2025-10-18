@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json;
-using Paribu.Api.Enums;
-using Paribu.Api.Models.RestApi;
+﻿using Paribu.Api.Enums;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Paribu.Api.Examples;
@@ -16,57 +12,90 @@ class Program
         var api = new ParibuRestClient();
 
         // Public Endpoints
-        var p01 = await api.GetHealthAsync();
+        var p01 = await api.PingAsync();
         var p02 = await api.GetExchangeInformationAsync();
         var p03 = await api.GetTickersAsync();
-        var p04 = await api.GetPriceSeriesAsync();
-        var p05 = await api.GetOrderBookAsync("btc_tl");
-        var p06 = await api.GetLatestMatchesAsync("btc_tl");
-        var p07 = await api.GetKlinesAsync("btc_tl", ParibuKlineInterval.OneDay, 1654387200, 1682899200, 100);
-        var p08 = await api.GetKlinesAsync("btc_tl", ParibuKlineInterval.OneDay, new DateTime(2022, 01, 01), DateTime.Now, 100);
-
-        // Authentication (Login)
-        var a01 = await api.LoginAsync("+90", "532XXXXXXX", "Pa55w0rd");
-        var a02 = await api.LoginVerifyAsync(a01.Data.VerificationToken, "---CODE---");
-
-        // Authentication (Existing Token)
-        api.SetDeviceId("0123456789abcdef0123456789abcdef");
-        api.SetAccessToken("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcd");
+        var p04 = await api.GetPublicTradesAsync("---SYMBOL---");
+        var p05 = await api.GetOrderBookAsync("---SYMBOL---");
+        var p06 = await api.GetOrderBookAsync("---SYMBOL---", 20);
+        var p07 = await api.GetKlinesAsync("btc_tl", ParibuKlineInterval.OneDay);
 
         // Private Endpoints
-        var x01 = await api.GetUserAccountAsync();
-        var x02 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderSide.Sell, ParibuOrderType.Limit, 21.0m, null, 100.0m); // Limit Order
-        var x03 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderSide.Sell, ParibuOrderType.Market, null, null, 100.0m); // Market Order, 100.00 USDT
-        var x04 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderSide.Buy, ParibuOrderType.Market, null, null, null, 2100.0m); // Market Order, 2100.00 TL
-        var x05 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderSide.Buy, ParibuOrderType.Limit, 21.5m, 21.0m, 100.0m); // Conditional Order
-        var x06 = await api.GetOrderAsync("----ORDER-ID-----");
-        var x07 = await api.GetOrdersAsync("usdt_tl");
-        var x08 = await api.GetOrdersHistoryAsync(new List<string> { "buy", "sell" });
-        var x09 = await api.GetOrdersHistoryAsync(new List<string> { "buy", "sell", "deposit", "withdraw" }, new List<string> { "tl", "usdt" });
-        var x10 = await api.GetOrdersHistoryAsync(new List<string> { "buy", "sell", "deposit", "withdraw" }, new List<string> { "tl", "usdt" }, new DateTime(2022, 01, 01), DateTime.Now, 1, 25);
-        var x11 = await api.CancelOrderAsync("----ORDER-ID-----");
-        var x12 = await api.CancelOrdersAsync(new List<string> { "----ORDER-ID-01-----", "----ORDER-ID-02-----", "----ORDER-ID-03-----" });
-        var x13 = await api.CancelOrdersAsync(new List<string> { "----ORDER-ID-01-----", "----ORDER-ID-02-----", "----ORDER-ID-03-----" });
-        var x14 = await api.CancelAllOrdersAsync();
+        api.SetApiCredentials("-----PUBLIC-KEY-----", "-----SECRET-KEY-----");
+        var p11 = await api.GetUserInformationAsync();
+        var p12 = await api.GetBalancesAsync();
+        var p13 = await api.GetTransfersAsync();
+        var p14 = await api.GetTransfersAsync(DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+        var p15 = await api.GetUserTradesAsync();
+        var p16 = await api.GetUserTradesAsync("---SYMBOL---", ParibuOrderSide.Buy, DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
+        var p17 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderType.Limit, ParibuOrderSide.Sell, amount: 100.0m, price: 40.0m); // Limit Order
+        var p18 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderType.Market, ParibuOrderSide.Sell, amount: 100.0m); // Market Order, 100.00 USDT
+        var p19 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderType.Market, ParibuOrderSide.Buy, amount: null, total: 2100.0m, null, null); // Market Order, 2100.00 TL
+        var p20 = await api.PlaceOrderAsync("usdt_tl", ParibuOrderType.Limit, ParibuOrderSide.Buy, amount: 100.0m, price: 39.0m, condition: 40.0m); // Conditional Order
+        var p21 = await api.GetOrderAsync("---ORDER-ID---");
+        var p22 = await api.CancelOrderAsync("---ORDER-ID---");
+        var p23 = await api.GetOpenOrderAsync();
+        var p24 = await api.GetOpenOrderAsync("---SYMBOL---");
+        var p25 = await api.GetDepositAddressAsync("btc","btc");
+        var p26 = await api.GetDepositAddressAsync("usdc", "eth");
 
         // Web Socket Client
-        var ws = new ParibuSocketClient();
+        var wss = new ParibuStreamClient();
 
-        // Tickers
-        var sub01 = ws.SubscribeToTickersAsync((data) =>
+        // Ticker Subscriptions
+        var sub01 = await wss.SubscribeToTickerAsync("usdt_tl", (data) =>
         {
             Console.WriteLine($"Ticker >> {data.Symbol} " +
                 $"O:{data.First} " +
-                $"H:{data.Highest} " +
-                $"L:{data.Lowest} " +
+                $"H:{data.High} " +
+                $"L:{data.Low} " +
                 $"C:{data.Last} " +
                 $"V:{data.Volume} " +
                 $"CH:{data.Change} " +
                 $"CP:{data.Percentage} " +
-                $"Avg:{data.Average} "
+                $"AVG:{data.Average} "
+                );
+        });
+        var sub02 = await wss.SubscribeToTickerAsync(["usdt_tl", "btc_tl", "eth_tl", "usdc_tl", "xrp_tl", "doge_tl", "chz_tl", "avax_tl"], (data) =>
+        {
+            Console.WriteLine($"Ticker >> {data.Symbol} " +
+                $"O:{data.First} " +
+                $"H:{data.High} " +
+                $"L:{data.Low} " +
+                $"C:{data.Last} " +
+                $"V:{data.Volume} " +
+                $"CH:{data.Change} " +
+                $"CP:{data.Percentage} " +
+                $"AVG:{data.Average} "
                 );
         });
 
+        // Order Book Difference (Delta) Subscriptions
+        var sub03 = await wss.SubscribeToOrderBookAsync("usdt_tl", (data) =>
+        {
+            Console.WriteLine($"Order Book >> {data.Symbol} " +
+                $"Asks:{data.Asks.Count} " +
+                $"Bids:{data.Bids.Count} " +
+                $"UpdateId:{data.UpdateId} "
+                );
+        });
+        var sub04 = await wss.SubscribeToOrderBookAsync(["usdt_tl", "btc_tl", "eth_tl", "usdc_tl", "xrp_tl", "doge_tl", "chz_tl", "avax_tl",], (data) =>
+        {
+            Console.WriteLine($"Order Book >> {data.Symbol} " +
+                $"Asks:{data.Asks.Count} " +
+                $"Bids:{data.Bids.Count} " +
+                $"UpdateId:{data.UpdateId} "
+                );
+        });
+
+        // Unsubscribe
+        await wss.UnsubscribeAsync(sub01.Data);
+        await wss.UnsubscribeAsync(sub02.Data);
+        await wss.UnsubscribeAsync(sub03.Data);
+        await wss.UnsubscribeAsync(sub04.Data);
+        await wss.UnsubscribeAllAsync();
+
+        // Done
         Console.WriteLine("Done");
         Console.ReadLine();
     }

@@ -1,34 +1,33 @@
-﻿namespace Paribu.Api.Models.RestApi;
+﻿namespace Paribu.Api.Models.StreamApi;
 
-public record ParibuTicker
+public class ParibuStreamTicker
 {
-    [JsonProperty("market")]
     public string Symbol { get; set; } = "";
 
-    [JsonProperty("low")]
+    [JsonProperty("l")]
     public decimal Low { get; set; }
 
-    [JsonProperty("high")]
+    [JsonProperty("h")]
     public decimal High { get; set; }
 
-    [JsonProperty("first")]
+    [JsonProperty("o")]
     public decimal First { get; set; }
 
-    [JsonProperty("last")]
+    [JsonProperty("c")]
     public decimal Last { get; set; }
 
-    [JsonProperty("volume")]
+    [JsonProperty("v")]
     public decimal Volume { get; set; }
 
-    [JsonProperty("pair_volume")]
+    [JsonProperty("q")]
     public decimal QuoteVolume { get; set; }
 
-    [JsonProperty("change")]
+    [JsonProperty("p")]
     public decimal Change { get; set; }
 
-    [JsonProperty("percentage")]
+    [JsonProperty("P")]
     public decimal Percentage { get; set; }
 
-    [JsonProperty("average")]
+    [JsonProperty("w")]
     public decimal Average { get; set; }
 }

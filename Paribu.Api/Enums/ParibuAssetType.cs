@@ -1,10 +1,10 @@
 ﻿namespace Paribu.Api.Enums;
 
-public enum ParibuAssetType
+public enum ParibuAssetType : byte
 {
-    [Label("fiat")]
-    Fiat,
+    [Map("fiat")]
+    Fiat = 1,
 
-    [Label("crypto")]
-    Crypto,
+    [Map("crypto")]
+    Crypto = 2,
 }
